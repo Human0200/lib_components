@@ -27,7 +27,6 @@
 	height: 35px;
 	background-image: url(images/sprite.png);
 	background-repeat: no-repeat;
-	/*opacity: .8;*/
 	border-bottom: none;
 }
 .bx-socialsidebar-group ul li a.fb {background-position: 0 0}
@@ -35,4 +34,7 @@
 .bx-socialsidebar-group ul li a.tw {background-position: -88px 0}
 .bx-socialsidebar-group ul li a.vk {background-position: -132px 0}
 .bx-socialsidebar-group ul li a.in {background-position: -176px 0}
+.bx-socialsidebar-group ul li a.pi {background-position: -220px 0}
+.bx-socialsidebar-group ul li a.wa {background-position: -264px 0}
+.bx-socialsidebar-group ul li a.tg {background-position: -308px 0}
 .bx-socialsidebar-group ul li a:hover {opacity: .9;}

@@ -1,5 +1,5 @@
 <?php
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
 $arComponentParameters = [
     "PARAMETERS" => [
@@ -27,6 +27,13 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "В соответствии с политикой 1С-Битрикс24 мы не продаем лицензии выше или ниже установленных цен",
         ],
+        "MORE_CAPTION" => [
+            "PARENT" => "BASE",
+            "NAME" => "Надпись над кнопкой",
+            "TYPE" => "TEXTAREA",
+            "DEFAULT" => "Помимо количества пользователей, ключевым критерием выбора тарифа является его функциональность.",
+            "ROWS" => 3,
+        ],
         "IBLOCK_ID_CLOUD" => [
             "PARENT" => "BASE",
             "NAME" => "ID инфоблока для облачных лицензий",
@@ -51,7 +58,7 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "В таблице цены со скидкой 50% для тех, кто покупает подписку впервые",
         ],
-        
+
         // Варианты цен для последней карточки "Энтерпрайз" в лицензиях
         "ENTERPRISE_OPTION_1_EMPLOYEES" => [
             "PARENT" => "ENTERPRISE",
@@ -71,7 +78,7 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "326280",
         ],
-        
+
         "ENTERPRISE_OPTION_2_EMPLOYEES" => [
             "PARENT" => "ENTERPRISE",
             "NAME" => "Вариант 2 - Количество сотрудников",
@@ -90,7 +97,7 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "575880",
         ],
-        
+
         "ENTERPRISE_OPTION_3_EMPLOYEES" => [
             "PARENT" => "ENTERPRISE",
             "NAME" => "Вариант 3 - Количество сотрудников",
@@ -109,7 +116,7 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "959880",
         ],
-        
+
         // Варианты цен для последней карточки подписок (облачная)
         "SUBSCRIPTION_CLOUD_OPTION_1_EMPLOYEES" => [
             "PARENT" => "SUBSCRIPTION_CLOUD",
@@ -129,7 +136,7 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "59940",
         ],
-        
+
         "SUBSCRIPTION_CLOUD_OPTION_2_EMPLOYEES" => [
             "PARENT" => "SUBSCRIPTION_CLOUD",
             "NAME" => "Вариант 2 - Количество сотрудников",
@@ -148,7 +155,7 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "119880",
         ],
-        
+
         "SUBSCRIPTION_CLOUD_OPTION_3_EMPLOYEES" => [
             "PARENT" => "SUBSCRIPTION_CLOUD",
             "NAME" => "Вариант 3 - Количество сотрудников",
@@ -167,7 +174,7 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "239880",
         ],
-        
+
         "CACHE_TIME" => [
             "DEFAULT" => 3600,
         ],
@@ -181,4 +188,3 @@ $arComponentParameters = [
         ],
     ]
 ];
-?>

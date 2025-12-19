@@ -32,6 +32,24 @@ $arComponentParameters = array(
 			"DEFAULT" => "",
 			"PARENT" => "BASE",
 		),
+		"PINTEREST" => array(
+			"NAME" => GetMessage("SOCSERV_PINTEREST"),
+			"TYPE" => "STRING",
+			"DEFAULT" => "",
+			"PARENT" => "BASE",
+		),
+		"WHATSAPP" => array(
+			"NAME" => GetMessage("SOCSERV_WHATSAPP"),
+			"TYPE" => "STRING",
+			"DEFAULT" => "",
+			"PARENT" => "BASE",
+		),
+		"TELEGRAM" => array(
+			"NAME" => GetMessage("SOCSERV_TELEGRAM"),
+			"TYPE" => "STRING",
+			"DEFAULT" => "",
+			"PARENT" => "BASE",
+		),
 	),
 );
 ?>

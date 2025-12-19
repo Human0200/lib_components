@@ -12,10 +12,55 @@ $arParams['SORT_BY'] = trim($arParams['SORT_BY']) ?: 'SORT';
 $arParams['SORT_ORDER'] = in_array($arParams['SORT_ORDER'], ['ASC', 'DESC']) ? $arParams['SORT_ORDER'] : 'ASC';
 $arParams['CACHE_TIME'] = intval($arParams['CACHE_TIME']) ?: 3600;
 
+// Параметры фильтрации по страницам
+$arParams['PAGE_CODE'] = trim($arParams['PAGE_CODE'] ?? '');
+$arParams['SHOW_ALL_IF_NO_PAGE'] = !isset($arParams['SHOW_ALL_IF_NO_PAGE']) || $arParams['SHOW_ALL_IF_NO_PAGE'] !== 'N';
+
+// Визуальные параметры
 $arParams['SERVICES_TITLE'] = trim($arParams['SERVICES_TITLE']) ?: '100+ готовых интеграций и сервисов!';
 $arParams['BUSINESS_TITLE'] = trim($arParams['BUSINESS_TITLE']) ?: 'Интеграции с нишевыми сервисами для бизнеса';
-$arParams['SHOW_SERVICES'] = $arParams['SHOW_SERVICES'] !== 'N';
-$arParams['SHOW_BUSINESS'] = $arParams['SHOW_BUSINESS'] !== 'N';
+$arParams['SHOW_SERVICES'] = !isset($arParams['SHOW_SERVICES']) || $arParams['SHOW_SERVICES'] !== 'N';
+$arParams['SHOW_BUSINESS'] = !isset($arParams['SHOW_BUSINESS']) || $arParams['SHOW_BUSINESS'] !== 'N';
+
+// ========== ФУНКЦИЯ АВТОМАТИЧЕСКОГО ОПРЕДЕЛЕНИЯ СТРАНИЦЫ ==========
+function autoDetectPageCode() {
+    global $APPLICATION;
+    
+    // Получаем текущий путь
+    $currentDir = $APPLICATION->GetCurDir();
+    
+    // Очищаем от слешей
+    $currentDir = trim($currentDir, '/');
+    
+    // Проверка главной страницы
+    if (empty($currentDir) || $currentDir === 'index.php') {
+        return 'main';
+    }
+    
+    // Разбиваем URL на части
+    $urlParts = array_filter(explode('/', $currentDir));
+    
+    // Берем последнюю часть URL
+    if (!empty($urlParts)) {
+        $lastPart = end($urlParts);
+        
+        // Очищаем от расширений
+        $pageCode = preg_replace('/\.(php|html|htm)$/', '', $lastPart);
+        
+        // Ограничиваем длину
+        $pageCode = substr($pageCode, 0, 50);
+        
+        if (!empty($pageCode)) {
+            return $pageCode;
+        }
+    }
+    
+    // Если всё равно пусто - возвращаем 'main'
+    return 'main';
+}
+
+// Всегда определяем код страницы автоматически (игнорируем параметр из настроек)
+$arParams['PAGE_CODE'] = autoDetectPageCode();
 
 // Функция получения ID инфоблока
 function getIblockId($arParams) {
@@ -46,20 +91,27 @@ if(!$arResult['IBLOCK_ID']) {
     return;
 }
 
-// Кеширование
+// Кеширование с учетом кода страницы
 $cache = new CPHPCache();
-$cache_id = 'business_integrations_'.$arResult['IBLOCK_ID'].'_'.$arParams['ITEMS_COUNT'];
+$cache_id = 'business_integrations_'.$arResult['IBLOCK_ID'].'_'.$arParams['ITEMS_COUNT'].'_'.$arParams['PAGE_CODE'].'_'.$arParams['SHOW_ALL_IF_NO_PAGE'];
 $cache_path = '/business/integrations/';
 
 if($arParams['CACHE_TIME'] > 0 && $cache->InitCache($arParams['CACHE_TIME'], $cache_id, $cache_path)) {
     $arResult = $cache->GetVars();
 } elseif($cache->StartDataCache()) {
     
-    // Фильтр
+    // ========== БЛОК БИЗНЕС-ИНТЕГРАЦИЙ (динамический из инфоблока) ==========
     $filter = [
         'IBLOCK_ID' => $arResult['IBLOCK_ID'],
         'ACTIVE' => 'Y'
     ];
+    
+    // Добавляем фильтр по странице
+    if (!empty($arParams['PAGE_CODE'])) {
+        $filter['PROPERTY_SHOW_ON_PAGES'] = $arParams['PAGE_CODE'];
+    } elseif (!$arParams['SHOW_ALL_IF_NO_PAGE']) {
+        $filter['PROPERTY_SHOW_ON_PAGES'] = false;
+    }
     
     // Выборка полей
     $arSelect = [
@@ -68,7 +120,8 @@ if($arParams['CACHE_TIME'] > 0 && $cache->InitCache($arParams['CACHE_TIME'], $ca
         'PREVIEW_TEXT',
         'DETAIL_TEXT',
         'PREVIEW_PICTURE',
-        'PROPERTY_IMAGE'
+        'PROPERTY_IMAGE',
+        'PROPERTY_SHOW_ON_PAGES'
     ];
     
     // Параметры навигации
@@ -89,7 +142,28 @@ if($arParams['CACHE_TIME'] > 0 && $cache->InitCache($arParams['CACHE_TIME'], $ca
     $arResult['BUSINESS_ITEMS'] = [];
     
     while($element = $dbElements->GetNext()) {
-        // Получаем изображение (приоритет: PROPERTY_IMAGE -> PREVIEW_PICTURE)
+        // Дополнительная проверка для точного совпадения кода страницы
+        if (!empty($arParams['PAGE_CODE'])) {
+            $showOnPages = $element['PROPERTY_SHOW_ON_PAGES_VALUE'] ?? '';
+            
+            if (!empty($showOnPages)) {
+                if (is_array($showOnPages)) {
+                    $pagesArray = $showOnPages;
+                } else {
+                    $pagesArray = explode(',', $showOnPages);
+                    $pagesArray = array_map('trim', $pagesArray);
+                }
+                
+                // Проверяем, есть ли нужный код страницы
+                if (!in_array($arParams['PAGE_CODE'], $pagesArray)) {
+                    continue;
+                }
+            } elseif (!$arParams['SHOW_ALL_IF_NO_PAGE']) {
+                continue;
+            }
+        }
+        
+        // Получаем изображение
         $image = '';
         if($element['PROPERTY_IMAGE_VALUE']) {
             $image = CFile::GetPath($element['PROPERTY_IMAGE_VALUE']);
@@ -97,7 +171,7 @@ if($arParams['CACHE_TIME'] > 0 && $cache->InitCache($arParams['CACHE_TIME'], $ca
             $image = CFile::GetPath($element['PREVIEW_PICTURE']);
         }
         
-        // Текст (приоритет: PREVIEW_TEXT -> DETAIL_TEXT)
+        // Текст
         $text = $element['PREVIEW_TEXT'] ?: $element['DETAIL_TEXT'];
         
         $arResult['BUSINESS_ITEMS'][] = [
@@ -108,7 +182,7 @@ if($arParams['CACHE_TIME'] > 0 && $cache->InitCache($arParams['CACHE_TIME'], $ca
         ];
     }
     
-    // Статические данные для сервисов
+    // ========== БЛОК СЕРВИСОВ (статические данные) ==========
     $arResult['SERVICES'] = [
         [
             'TITLE' => 'Мессенджеры и<br>социальные сети',
@@ -143,15 +217,18 @@ if($arParams['CACHE_TIME'] > 0 && $cache->InitCache($arParams['CACHE_TIME'], $ca
             'CLASS' => 'ready__services-card--03'
         ]
     ];
-    
+
     // Передаем параметры
     $arResult['SERVICES_TITLE'] = $arParams['SERVICES_TITLE'];
     $arResult['BUSINESS_TITLE'] = $arParams['BUSINESS_TITLE'];
     $arResult['SHOW_SERVICES'] = $arParams['SHOW_SERVICES'];
     $arResult['SHOW_BUSINESS'] = $arParams['SHOW_BUSINESS'];
+    $arResult['PAGE_CODE'] = $arParams['PAGE_CODE'];
+    $arResult['DETECTED_PAGE'] = true;
     
     $cache->EndDataCache($arResult);
 }
 
 // Подключаем шаблон
 $this->IncludeComponentTemplate();
+?>

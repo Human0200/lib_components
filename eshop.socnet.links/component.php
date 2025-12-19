@@ -39,6 +39,27 @@ if (isset($arParams["INSTAGRAM"]) && !empty($arParams["INSTAGRAM"]))
 		"NAME" => "Instagram",
 	);
 
+if (isset($arParams["PINTEREST"]) && !empty($arParams["PINTEREST"]))
+	$arResult["SOCSERV"]["PINTEREST"] = array(
+		"LINK" => $arParams["PINTEREST"],
+		"CLASS" => "pi",
+		"NAME" => "Pinterest",
+	);
+
+if (isset($arParams["WHATSAPP"]) && !empty($arParams["WHATSAPP"]))
+	$arResult["SOCSERV"]["WHATSAPP"] = array(
+		"LINK" => $arParams["WHATSAPP"],
+		"CLASS" => "wa",
+		"NAME" => "WhatsApp",
+	);
+
+if (isset($arParams["TELEGRAM"]) && !empty($arParams["TELEGRAM"]))
+	$arResult["SOCSERV"]["TELEGRAM"] = array(
+		"LINK" => $arParams["TELEGRAM"],
+		"CLASS" => "tg",
+		"NAME" => "Telegram",
+	);
+
 $arResult['FACEBOOK_CONVERSION_ENABLED'] =
 	\Bitrix\Main\Loader::includeModule('sale')
 	&& \Bitrix\Sale\Internals\FacebookConversion::isEventEnabled('Contact')

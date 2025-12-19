@@ -23,7 +23,7 @@ $arComponentParameters = [
             "PARENT" => "BASE",
             "NAME" => "Код страницы (для фильтрации элементов)",
             "TYPE" => "STRING",
-            "DEFAULT" => "",
+            "DEFAULT" => "1",
         ],
         "MARK" => [
             "PARENT" => "BASE",

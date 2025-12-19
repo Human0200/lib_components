@@ -15,12 +15,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
                 <span><?=htmlspecialchars($arResult['TITLE'])?></span>
                 <small><?=htmlspecialchars($arResult['SUBTITLE'])?></small>
             </h1>
-            <p class="topbar__price">
-                <del><?=htmlspecialchars($arResult['PRICE_OLD'])?></del>
-                <ins><?=htmlspecialchars($arResult['PRICE_NEW'])?> <sub><?=htmlspecialchars($arResult['PRICE_CURRENCY'])?></sub>
-                    <small><?=nl2br(htmlspecialchars($arResult['PRICE_NOTE']))?></small>
-                </ins>
-            </p>
+
         </div>
         
         <?php if (!empty($arResult['CARDS'])): ?>

@@ -260,7 +260,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
             <div class="license__group-foot">
                 <div class="license__consult">
-                    <p class="license__consult-text">Помимо количества пользователей, ключевым критерием выбора тарифа является его функциональность.</p>
+                    <p class="license__consult-text"><?=nl2br($arResult['MORE_CAPTION'])?></p>
                     <div class="license__consult-action">
                         <a class="ui-btn ui-btn--gradient" href="#modal-feedback" data-fancybox="">Получить бесплатную консультацию</a>
                     </div>

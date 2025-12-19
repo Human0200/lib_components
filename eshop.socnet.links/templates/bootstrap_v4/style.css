@@ -43,3 +43,18 @@
 	background-color: #dc4e41;
 	background-image: url(images/ui-service-light-google-plus.svg);
 }
+
+.bx-icon-service-pi > i {
+	background-color: #e60023;
+	background-image: url(images/ui-service-light-pinterest.svg);
+}
+
+.bx-icon-service-wa > i {
+	background-color: #25d366;
+	background-image: url(images/ui-service-light-whatsapp.svg);
+}
+
+.bx-icon-service-tg > i {
+	background-color: #0088cc;
+	background-image: url(images/ui-service-light-telegram.svg);
+}

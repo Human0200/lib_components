@@ -198,6 +198,7 @@ class AutoPageCreator
     {
         $content = <<<'PHP'
 <?
+define('HEADER_TYPE', 'cases');
 require($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("TITLE_PLACEHOLDER");
@@ -312,26 +313,64 @@ $APPLICATION->IncludeComponent(
 );?>
 
 <?$APPLICATION->IncludeComponent(
-    "bitrix:main.include",
-    "",
-    [
-        "AREA_FILE_SHOW" => "file",
-        "AREA_FILE_SUFFIX" => "inc",
-        "EDIT_TEMPLATE" => "",
-        "PATH" => "/local/include/results.php"
-    ]
+	"leadspace:results", 
+	".default", 
+	[
+		"TITLE" => "Результаты и выводы",
+		"MARK" => "Статистика",
+		"CARD_1_IMAGE" => "/local/templates/leadspace/assets/images/results/green.webp",
+		"CARD_1_TITLE" => "Рост показателей",
+		"CARD_1_ITEM_1_PCT" => "%",
+		"CARD_1_ITEM_1_TEXT" => "прозрачности в контроле охраны труда",
+		"COMPONENT_TEMPLATE" => ".default",
+		"CACHE_TYPE" => "A",
+		"CACHE_TIME" => "3600",
+		"CARD_1_ITEM_1_NUMBER" => "99",
+		"CARD_1_ITEM_1_CAPTION" => "",
+		"CARD_1_ITEM_2_NUMBER" => "70",
+		"CARD_1_ITEM_2_PCT" => "%",
+		"CARD_1_ITEM_2_TEXT" => "времени на ведение журналов и планирование инструктажей",
+		"CARD_1_ITEM_2_CAPTION" => "",
+		"CARD_1_ITEM_3_NUMBER" => "60",
+		"CARD_1_ITEM_3_PCT" => "%",
+		"CARD_1_ITEM_3_TEXT" => "скорости реакции на просрочки и истечение сроков документов",
+		"CARD_1_ITEM_3_CAPTION" => "",
+		"CARD_2_IMAGE" => "/local/templates/leadspace/assets/images/results/red.webp",
+		"CARD_2_TITLE" => "Снижение издержек",
+		"CARD_2_ITEM_1_NUMBER" => "50",
+		"CARD_2_ITEM_1_PCT" => "%",
+		"CARD_2_ITEM_1_TEXT" => "ошибок при работе с документами и графиками",
+		"CARD_2_ITEM_1_CAPTION" => "",
+		"CARD_2_ITEM_2_NUMBER" => "40",
+		"CARD_2_ITEM_2_PCT" => "%",
+		"CARD_2_ITEM_2_TEXT" => "нагрузки на специалиста по ОТ и HR-отдел",
+		"CARD_2_ITEM_2_CAPTION" => "",
+		"CARD_2_ITEM_3_NUMBER" => "30",
+		"CARD_2_ITEM_3_PCT" => "%",
+		"CARD_2_ITEM_3_TEXT" => "бумажного документооборота за счёт перехода в цифровую среду",
+		"CARD_2_ITEM_3_CAPTION" => ""
+	],
+	false
 );?>
 
-<?$APPLICATION->IncludeComponent(
-    "bitrix:main.include",
-    "",
-    [
-        "AREA_FILE_SHOW" => "file",
-        "AREA_FILE_SUFFIX" => "inc",
-        "EDIT_TEMPLATE" => "",
-        "PATH" => "/local/include/features.php"
-    ]
-);?>
+<?php
+$APPLICATION->IncludeComponent(
+	"leadspace:features", 
+	".default", 
+	[
+		"TITLE" => "Особенности проекта",
+		"TAGLINE_ROW1" => "Ключевая особенность: создание полноценного цифрового рабочего места специалиста по охране труда.",
+		"TAGLINE_ROW2" => "Дополнительные особенности:",
+		"FEATURES_LIST" => "Интеграция учёта СИЗ, инструктажей, медосмотров и аттестаций в одной CRM.
+Автоматические напоминания и задачи на всех стадиях процессов.
+Возможность гибкой настройки под структуру и специфику предприятия",
+		"COMPONENT_TEMPLATE" => ".default",
+		"CACHE_TYPE" => "A",
+		"CACHE_TIME" => "3600"
+	],
+	false
+);
+?>
 
 <?$APPLICATION->IncludeComponent(
     "leadspace:solutions.list", 
@@ -348,28 +387,32 @@ $APPLICATION->IncludeComponent(
 <figure class="group-d3"></figure>
 
 <?$APPLICATION->IncludeComponent(
-    "bitrix:form.result.new",
-    "feedback",
-    [
-        "WEB_FORM_ID" => "1",
-        "IGNORE_CUSTOM_TEMPLATE" => "N",
-        "USE_EXTENDED_ERRORS" => "Y",
-        "SEF_MODE" => "N",
-        "CACHE_TYPE" => "A",
-        "CACHE_TIME" => "3600",
-        "LIST_URL" => "https://3d-group.space/thank.php",
-        "EDIT_URL" => "",
-        "SUCCESS_URL" => "",
-        "BUTTON_TEXT" => "отправить",
-        "PRIVACY_URL" => "/privacy/",
-        "PERSONAL_DATA_URL" => "/personal-data/",
-        "CHAIN_ITEM_TEXT" => "",
-        "CHAIN_ITEM_LINK" => "",
-        "VARIABLE_ALIASES" => [
-            "WEB_FORM_ID" => "WEB_FORM_ID",
-            "RESULT_ID" => "RESULT_ID",
-        ]
-    ]
+	"bitrix:form.result.new", 
+	"feedback", 
+	[
+		"WEB_FORM_ID" => "1",
+		"IGNORE_CUSTOM_TEMPLATE" => "N",
+		"USE_EXTENDED_ERRORS" => "Y",
+		"SEF_MODE" => "N",
+		"CACHE_TYPE" => "A",
+		"CACHE_TIME" => "3600",
+		"LIST_URL" => "https://3d-group.space/thank.php",
+		"EDIT_URL" => "",
+		"SUCCESS_URL" => "#form-success",
+		"SECTION_TITLE" => "Ответим на всё, что вас интересует",
+		"SECTION_TEXT" => "Вы знаете цели, мы знаем инструмент. \n Создадим оптимальное решение вместе.",
+		"BUTTON_TEXT" => "отправить",
+		"PRIVACY_URL" => "/privacy/",
+		"PERSONAL_DATA_URL" => "/personal-data/",
+		"CHAIN_ITEM_TEXT" => "",
+		"CHAIN_ITEM_LINK" => "",
+		"COMPONENT_TEMPLATE" => "feedback",
+		"VARIABLE_ALIASES" => [
+			"WEB_FORM_ID" => "1",
+			"RESULT_ID" => "1",
+		]
+	],
+	false
 );?>
 
 <?$APPLICATION->IncludeComponent(
@@ -382,9 +425,9 @@ $APPLICATION->IncludeComponent(
         "SEF_MODE" => "N",
         "CACHE_TYPE" => "A",
         "CACHE_TIME" => "3600",
-        "LIST_URL" => "https://3d-group.space/thank.php",
+        "LIST_URL" => "",
         "EDIT_URL" => "",
-        "SUCCESS_URL" => "",
+        "SUCCESS_URL" => "#form-success",
         "CHAIN_ITEM_TEXT" => "",
         "CHAIN_ITEM_LINK" => "",
         "PRIVACY_URL" => "/privacy/",
@@ -410,6 +453,7 @@ PHP;
     {
         $content = <<<'PHP'
 <?
+define('HEADER_TYPE', 'solutions');
 require($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("TITLE_PLACEHOLDER");
@@ -483,6 +527,39 @@ $APPLICATION->IncludeComponent(
     false
 );
 ?>
+<?php
+$APPLICATION->IncludeComponent(
+    "leadspace:whom.cards", 
+    ".default", 
+    [
+        "MARK" => "для кого",
+        "TITLE" => "Кому подходит данное решение?",
+        "BUTTON_TEXT" => "Попробовать 7 дней бесплатно",
+        "BUTTON_LINK" => "#modal-feedback",
+        "CARD_1_IMAGE" => "/local/templates/leadspace/assets/images/whom/01.webp",
+        "CARD_1_TITLE" => "Небольшим компаниям",
+        "CARD_1_TEXT" => "от|1|до|5|сотрудников",
+        "CARD_1_BACK_SUBTITLE" => "Численность от 1 до 5 сотрудников",
+        "CARD_1_BACK_TITLE" => "Небольшим компаниям",
+        "CARD_1_BACK_TEXT" => "Описание...",
+        "CARD_2_IMAGE" => "/local/templates/leadspace/assets/images/whom/02.webp",
+        "CARD_2_TITLE" => "Средним компаниям",
+        "CARD_2_TEXT" => "от|3|до|50|сотрудников",
+        "CARD_2_BACK_SUBTITLE" => "Численность от 3 до 50 сотрудников",
+        "CARD_2_BACK_TITLE" => "Средним компаниям",
+        "CARD_2_BACK_TEXT" => "Описание...",
+        "CARD_3_IMAGE" => "/local/templates/leadspace/assets/images/whom/02.webp",
+        "CARD_3_TITLE" => "Крупным компаниям",
+        "CARD_3_TEXT" => "от|10|до|1000|сотрудников",
+        "CARD_3_BACK_SUBTITLE" => "Численность от 10 до 1 000 сотрудников",
+        "CARD_3_BACK_TITLE" => "Крупным компаниям",
+        "CARD_3_BACK_TEXT" => "Описание...",
+        "CACHE_TIME" => "3600",
+        "CACHE_TYPE" => "A"
+    ],
+    false
+);
+?>
 
 <?$APPLICATION->IncludeComponent(
     "leadspace:bitrix24.tools", 
@@ -520,39 +597,6 @@ $APPLICATION->IncludeComponent(
     false
 );?>
 
-<?php
-$APPLICATION->IncludeComponent(
-    "leadspace:whom.cards", 
-    ".default", 
-    [
-        "MARK" => "для кого",
-        "TITLE" => "Кому подходит данное решение?",
-        "BUTTON_TEXT" => "Попробовать 7 дней бесплатно",
-        "BUTTON_LINK" => "#modal-feedback",
-        "CARD_1_IMAGE" => "/local/templates/leadspace/assets/images/whom/01.webp",
-        "CARD_1_TITLE" => "Небольшим компаниям",
-        "CARD_1_TEXT" => "от|1|до|5|сотрудников",
-        "CARD_1_BACK_SUBTITLE" => "Численность от 1 до 5 сотрудников",
-        "CARD_1_BACK_TITLE" => "Небольшим компаниям",
-        "CARD_1_BACK_TEXT" => "Описание...",
-        "CARD_2_IMAGE" => "/local/templates/leadspace/assets/images/whom/02.webp",
-        "CARD_2_TITLE" => "Средним компаниям",
-        "CARD_2_TEXT" => "от|3|до|50|сотрудников",
-        "CARD_2_BACK_SUBTITLE" => "Численность от 3 до 50 сотрудников",
-        "CARD_2_BACK_TITLE" => "Средним компаниям",
-        "CARD_2_BACK_TEXT" => "Описание...",
-        "CARD_3_IMAGE" => "/local/templates/leadspace/assets/images/whom/02.webp",
-        "CARD_3_TITLE" => "Крупным компаниям",
-        "CARD_3_TEXT" => "от|10|до|1000|сотрудников",
-        "CARD_3_BACK_SUBTITLE" => "Численность от 10 до 1 000 сотрудников",
-        "CARD_3_BACK_TITLE" => "Крупным компаниям",
-        "CARD_3_BACK_TEXT" => "Описание...",
-        "CACHE_TIME" => "3600",
-        "CACHE_TYPE" => "A"
-    ],
-    false
-);
-?>
 
 <?$APPLICATION->IncludeComponent(
     "bitrix:main.include",
@@ -692,33 +736,34 @@ $APPLICATION->IncludeComponent(
 
 <figure class="group-d3"></figure>
 
-<?php
-$APPLICATION->IncludeComponent(
-    "bitrix:form.result.new", 
-    "feedback", 
-    [
-        "WEB_FORM_ID" => "1",
-        "IGNORE_CUSTOM_TEMPLATE" => "N",
-        "USE_EXTENDED_ERRORS" => "Y",
-        "SEF_MODE" => "N",
-        "CACHE_TYPE" => "A",
-        "CACHE_TIME" => "3600",
-        "LIST_URL" => "https://3d-group.space/thank.php",
-        "EDIT_URL" => "",
-        "SUCCESS_URL" => "",
-        "BUTTON_TEXT" => "отправить",
-        "PRIVACY_URL" => "/privacy/",
-        "PERSONAL_DATA_URL" => "/personal-data/",
-        "CHAIN_ITEM_TEXT" => "",
-        "CHAIN_ITEM_LINK" => "",
-        "VARIABLE_ALIASES" => [
-            "WEB_FORM_ID" => "WEB_FORM_ID",
-            "RESULT_ID" => "RESULT_ID",
-        ]
-    ],
-    false
-);
-?>
+<?$APPLICATION->IncludeComponent(
+	"bitrix:form.result.new", 
+	"feedback", 
+	[
+		"WEB_FORM_ID" => "1",
+		"IGNORE_CUSTOM_TEMPLATE" => "N",
+		"USE_EXTENDED_ERRORS" => "Y",
+		"SEF_MODE" => "N",
+		"CACHE_TYPE" => "A",
+		"CACHE_TIME" => "3600",
+		"LIST_URL" => "https://3d-group.space/thank.php",
+		"EDIT_URL" => "",
+		"SUCCESS_URL" => "#form-success",
+		"SECTION_TITLE" => "Ответим на всё, что вас интересует",
+		"SECTION_TEXT" => "Вы знаете цели, мы знаем инструмент. \n Создадим оптимальное решение вместе.",
+		"BUTTON_TEXT" => "отправить",
+		"PRIVACY_URL" => "/privacy/",
+		"PERSONAL_DATA_URL" => "/personal-data/",
+		"CHAIN_ITEM_TEXT" => "",
+		"CHAIN_ITEM_LINK" => "",
+		"COMPONENT_TEMPLATE" => "feedback",
+		"VARIABLE_ALIASES" => [
+			"WEB_FORM_ID" => "1",
+			"RESULT_ID" => "1",
+		]
+	],
+	false
+);?>
 
 <?php
 $APPLICATION->IncludeComponent(
@@ -731,9 +776,9 @@ $APPLICATION->IncludeComponent(
         "SEF_MODE" => "N",
         "CACHE_TYPE" => "A",
         "CACHE_TIME" => "3600",
-        "LIST_URL" => "https://3d-group.space/thank.php",
+        "LIST_URL" => "",
         "EDIT_URL" => "",
-        "SUCCESS_URL" => "",
+        "SUCCESS_URL" => "#form-success",
         "CHAIN_ITEM_TEXT" => "",
         "CHAIN_ITEM_LINK" => "",
         "PRIVACY_URL" => "/privacy/",
