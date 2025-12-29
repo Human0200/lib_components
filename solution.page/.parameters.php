@@ -13,6 +13,15 @@ while ($arIBlock = $dbIBlock->Fetch()) {
     $arIBlocks[$arIBlock["ID"]] = "[" . $arIBlock["ID"] . "] " . $arIBlock["NAME"];
 }
 
+// Получаем типы инфоблоков
+$arIBlockTypes = [];
+$dbIBlockType = \CIBlockType::GetList();
+while ($arIBlockType = $dbIBlockType->Fetch()) {
+    if ($ar = \CIBlockType::GetByIDLang($arIBlockType["ID"], LANG)) {
+        $arIBlockTypes[$arIBlockType["ID"]] = "[" . $arIBlockType["ID"] . "] " . $ar["NAME"];
+    }
+}
+
 $arComponentParameters = [
     // === ОПИСАНИЕ ГРУПП (ВИЗУАЛЬНЫЕ СЕКЦИИ) ===
     "GROUPS" => [
@@ -39,14 +48,17 @@ $arComponentParameters = [
         "TOOLS" => ["NAME" => "Tools - Основное"],
         "TOOLS_1" => ["NAME" => "Tools - Инструмент 1"],
         "TOOLS_2" => ["NAME" => "Tools - Инструмент 2"],
+        "READY" => ["NAME" => "Ready Section - Основное"],
+        "READY_SERVICES" => ["NAME" => "Ready Section - Сервисы"],
+        "READY_BUSINESS" => ["NAME" => "Ready Section - Бизнес-интеграции"],
         "ADDITIONAL" => ["NAME" => "Дополнительно"],
     ],
 
     "PARAMETERS" => [
-        // === НАСТРОЙКИ ИСТОЧНИКА ДАННЫХ (НОВОЕ) ===
+        // === НАСТРОЙКИ ИСТОЧНИКА ДАННЫХ ===
         "IBLOCK_ID" => [
             "PARENT" => "DATA_SOURCE",
-            "NAME" => "Выберите инфоблок",
+            "NAME" => "Основной инфоблок (для данных)",
             "TYPE" => "LIST",
             "VALUES" => $arIBlocks,
             "ADDITIONAL_VALUES" => "Y",
@@ -54,17 +66,18 @@ $arComponentParameters = [
         ],
         "ELEMENT_ID" => [
             "PARENT" => "DATA_SOURCE",
-            "NAME" => "ID элемента (для подстановки данных)",
+            "NAME" => "ID элемента (для данных всех блоков)",
             "TYPE" => "STRING",
             "DEFAULT" => "",
+            "DESCRIPTION" => "Используется для подстановки данных в topbar, whom, tools, ready"
         ],
 
         // === НАСТРОЙКИ ОТОБРАЖЕНИЯ БЛОКОВ ===
         "BLOCKS_ORDER" => [
             "PARENT" => "DISPLAY",
-            "NAME" => "Порядок блоков (через запятую: topbar,whom,tools)",
+            "NAME" => "Порядок блоков (через запятую: topbar,whom,tools,ready)",
             "TYPE" => "STRING",
-            "DEFAULT" => "topbar,whom,tools",
+            "DEFAULT" => "topbar,whom,tools,ready",
             "COLS" => 50,
         ],
         
@@ -84,6 +97,12 @@ $arComponentParameters = [
         "TOOLS_TEMPLATE" => [
             "PARENT" => "TEMPLATES",
             "NAME" => "Шаблон для Tools",
+            "TYPE" => "STRING",
+            "DEFAULT" => ".default",
+        ],
+        "READY_TEMPLATE" => [
+            "PARENT" => "TEMPLATES",
+            "NAME" => "Шаблон для Ready Section",
             "TYPE" => "STRING",
             "DEFAULT" => ".default",
         ],
@@ -540,6 +559,91 @@ $arComponentParameters = [
             "DEFAULT" => "",
         ],
         
+        // === ПАРАМЕТРЫ READY SECTION ===
+        // Настройки инфоблока для ready
+        "READY_IBLOCK_ID" => [
+            "PARENT" => "READY",
+            "NAME" => "Инфоблок бизнес-интеграций",
+            "TYPE" => "LIST",
+            "VALUES" => $arIBlocks,
+            "ADDITIONAL_VALUES" => "Y",
+            "DEFAULT" => "",
+            "DESCRIPTION" => "Если не указан, используется основной инфоблок"
+        ],
+        "READY_IBLOCK_CODE" => [
+            "PARENT" => "READY",
+            "NAME" => "Код инфоблока бизнес-интеграций",
+            "TYPE" => "STRING",
+            "DEFAULT" => "business_integrations",
+            "DESCRIPTION" => "Используется если не указан ID инфоблока"
+        ],
+        "READY_IBLOCK_TYPE" => [
+            "PARENT" => "READY",
+            "NAME" => "Тип инфоблока",
+            "TYPE" => "LIST",
+            "VALUES" => $arIBlockTypes,
+            "DEFAULT" => "services",
+        ],
+        
+        // Настройки отображения
+        "READY_SHOW_SERVICES" => [
+            "PARENT" => "READY",
+            "NAME" => "Показывать блок сервисов",
+            "TYPE" => "CHECKBOX",
+            "DEFAULT" => "Y",
+        ],
+        "READY_SHOW_BUSINESS" => [
+            "PARENT" => "READY",
+            "NAME" => "Показывать блок бизнес-интеграций",
+            "TYPE" => "CHECKBOX",
+            "DEFAULT" => "Y",
+        ],
+        
+        // Количество и сортировка
+        "READY_ITEMS_COUNT" => [
+            "PARENT" => "READY",
+            "NAME" => "Количество элементов для вывода",
+            "TYPE" => "STRING",
+            "DEFAULT" => "6",
+        ],
+        "READY_SORT_BY" => [
+            "PARENT" => "READY",
+            "NAME" => "Поле сортировки",
+            "TYPE" => "LIST",
+            "VALUES" => [
+                "SORT" => "Сортировка",
+                "ID" => "ID",
+                "NAME" => "Название",
+                "ACTIVE_FROM" => "Дата начала активности",
+                "DATE_CREATE" => "Дата создания",
+            ],
+            "DEFAULT" => "SORT",
+        ],
+        "READY_SORT_ORDER" => [
+            "PARENT" => "READY",
+            "NAME" => "Порядок сортировки",
+            "TYPE" => "LIST",
+            "VALUES" => [
+                "ASC" => "По возрастанию",
+                "DESC" => "По убыванию",
+            ],
+            "DEFAULT" => "ASC",
+        ],
+        
+        // Заголовки
+        "READY_SERVICES_TITLE" => [
+            "PARENT" => "READY_SERVICES",
+            "NAME" => "Заголовок сервисов",
+            "TYPE" => "STRING",
+            "DEFAULT" => "100+ готовых интеграций и сервисов!",
+        ],
+        "READY_BUSINESS_TITLE" => [
+            "PARENT" => "READY_BUSINESS",
+            "NAME" => "Заголовок бизнес-интеграций",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Интеграции с нишевыми сервисами для бизнеса",
+        ],
+        
         // === ДОПОЛНИТЕЛЬНЫЕ НАСТРОЙКИ ===
         "CSS_CLASS" => [
             "PARENT" => "ADDITIONAL",
@@ -553,4 +657,3 @@ $arComponentParameters = [
         ],
     ],
 ];
-?>

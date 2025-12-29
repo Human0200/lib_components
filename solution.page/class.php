@@ -20,6 +20,20 @@ class LandingPageComponent extends CBitrixComponent
         $arParams['IBLOCK_ID'] = (int)$arParams['IBLOCK_ID'];
         $arParams['ELEMENT_ID'] = (int)$arParams['ELEMENT_ID'];
 
+        // Инициализация параметров ready, если они не переданы
+        $arParams['READY_IBLOCK_ID'] = $arParams['READY_IBLOCK_ID'] ?? $arParams['IBLOCK_ID'] ?? 0;
+        $arParams['READY_IBLOCK_CODE'] = $arParams['READY_IBLOCK_CODE'] ?? 'business_integrations';
+        $arParams['READY_IBLOCK_TYPE'] = $arParams['READY_IBLOCK_TYPE'] ?? 'services';
+        $arParams['READY_ELEMENT_ID'] = $arParams['READY_ELEMENT_ID'] ?? $arParams['ELEMENT_ID'] ?? 0;
+        $arParams['READY_SERVICES_TITLE'] = $arParams['READY_SERVICES_TITLE'] ?? '100+ готовых интеграций и сервисов!';
+        $arParams['READY_BUSINESS_TITLE'] = $arParams['READY_BUSINESS_TITLE'] ?? 'Интеграции с нишевыми сервисами для бизнеса';
+        $arParams['READY_SHOW_SERVICES'] = $arParams['READY_SHOW_SERVICES'] ?? 'Y';
+        $arParams['READY_SHOW_BUSINESS'] = $arParams['READY_SHOW_BUSINESS'] ?? 'Y';
+        $arParams['READY_ITEMS_COUNT'] = $arParams['READY_ITEMS_COUNT'] ?? '6';
+        $arParams['READY_SORT_BY'] = $arParams['READY_SORT_BY'] ?? 'SORT';
+        $arParams['READY_SORT_ORDER'] = $arParams['READY_SORT_ORDER'] ?? 'ASC';
+        $arParams['READY_TEMPLATE'] = $arParams['READY_TEMPLATE'] ?? '.default';
+
         $arParams['CACHE_TIME'] = intval($arParams['CACHE_TIME']) ?: 3600;
         return $arParams;
     }
@@ -107,8 +121,11 @@ class LandingPageComponent extends CBitrixComponent
                 $params[$newKey] = $value;
             }
         }
+        
+        // Добавляем общие параметры кеширования
         $params['CACHE_TIME'] = $this->arParams['CACHE_TIME'];
         $params['CACHE_TYPE'] = $this->arParams['CACHE_TYPE'];
+        
         return $params;
     }
 
@@ -117,9 +134,15 @@ class LandingPageComponent extends CBitrixComponent
         if (!$this->checkModules()) return;
 
         $this->arResult['BLOCKS_ORDER'] = explode(',', $this->arParams['BLOCKS_ORDER']);
+        
+        // Получаем параметры для каждого блока
         $this->arResult['TOPBAR_PARAMS'] = $this->getBlockParams('TOPBAR');
         $this->arResult['WHOM_PARAMS'] = $this->getBlockParams('WHOM');
         $this->arResult['TOOLS_PARAMS'] = $this->getBlockParams('TOOLS');
+        $this->arResult['READY_PARAMS'] = $this->getBlockParams('READY');
+        
+        // Добавляем CSS класс для обертки
+        $this->arResult['CSS_CLASS'] = $this->arParams['CSS_CLASS'] ?? '';
 
         $dynamicData = $this->getIblockData();
 
@@ -150,30 +173,24 @@ class LandingPageComponent extends CBitrixComponent
             $whomMapping = [
                 // Карточка 1
                 'WHOM_CARD_1_TITLE' => 'CARD_1_TITLE',
-                'WHOM_CARD_1_DESCRIPTION' => 'CARD_1_DESCRIPTION',
-                'WHOM_CARD_1_COUNT' => 'CARD_1_COUNT',
-                'WHOM_CARD_1_IMAGE' => 'CARD_1_IMAGE',
                 'WHOM_CARD_1_TEXT' => 'CARD_1_TEXT',
+                'WHOM_CARD_1_IMAGE' => 'CARD_1_IMAGE',
                 'WHOM_CARD_1_BACK_SUBTITLE' => 'CARD_1_BACK_SUBTITLE',
                 'WHOM_CARD_1_BACK_TITLE' => 'CARD_1_BACK_TITLE',
                 'WHOM_CARD_1_BACK_TEXT' => 'CARD_1_BACK_TEXT',
 
                 // Карточка 2
                 'WHOM_CARD_2_TITLE' => 'CARD_2_TITLE',
-                'WHOM_CARD_2_DESCRIPTION' => 'CARD_2_DESCRIPTION',
-                'WHOM_CARD_2_COUNT' => 'CARD_2_COUNT',
-                'WHOM_CARD_2_IMAGE' => 'CARD_2_IMAGE',
                 'WHOM_CARD_2_TEXT' => 'CARD_2_TEXT',
+                'WHOM_CARD_2_IMAGE' => 'CARD_2_IMAGE',
                 'WHOM_CARD_2_BACK_SUBTITLE' => 'CARD_2_BACK_SUBTITLE',
                 'WHOM_CARD_2_BACK_TITLE' => 'CARD_2_BACK_TITLE',
                 'WHOM_CARD_2_BACK_TEXT' => 'CARD_2_BACK_TEXT',
 
                 // Карточка 3
                 'WHOM_CARD_3_TITLE' => 'CARD_3_TITLE',
-                'WHOM_CARD_3_DESCRIPTION' => 'CARD_3_DESCRIPTION',
-                'WHOM_CARD_3_COUNT' => 'CARD_3_COUNT',
-                'WHOM_CARD_3_IMAGE' => 'CARD_3_IMAGE',
                 'WHOM_CARD_3_TEXT' => 'CARD_3_TEXT',
+                'WHOM_CARD_3_IMAGE' => 'CARD_3_IMAGE',
                 'WHOM_CARD_3_BACK_SUBTITLE' => 'CARD_3_BACK_SUBTITLE',
                 'WHOM_CARD_3_BACK_TITLE' => 'CARD_3_BACK_TITLE',
                 'WHOM_CARD_3_BACK_TEXT' => 'CARD_3_BACK_TEXT',
@@ -185,14 +202,22 @@ class LandingPageComponent extends CBitrixComponent
                 }
             }
 
+            // Сохраняем свойства для возможного использования
             $this->arResult['TOPBAR_PARAMS']['IBLOCK_PROPS'] = $dynamicData['DYNAMIC_PROPS'];
             $this->arResult['WHOM_PARAMS']['IBLOCK_PROPS'] = $dynamicData['DYNAMIC_PROPS'];
+            
+            // Передаем ELEMENT_ID в READY_PARAMS для связанных элементов
+            if ($this->arParams['ELEMENT_ID'] > 0) {
+                $this->arResult['READY_PARAMS']['ELEMENT_ID'] = $this->arParams['ELEMENT_ID'];
+            }
         }
 
+        // Шаблоны компонентов
         $this->arResult['TEMPLATES'] = [
-            'topbar' => $this->arParams['TOPBAR_TEMPLATE'],
-            'whom' => $this->arParams['WHOM_CARDS_TEMPLATE'],
-            'tools' => $this->arParams['TOOLS_TEMPLATE'],
+            'topbar' => $this->arParams['TOPBAR_TEMPLATE'] ?? '.default',
+            'whom' => $this->arParams['WHOM_CARDS_TEMPLATE'] ?? '.default',
+            'tools' => $this->arParams['TOOLS_TEMPLATE'] ?? '.default',
+            'ready' => $this->arParams['READY_TEMPLATE'] ?? '.default', // ← Добавлено!
         ];
 
         $this->includeComponentTemplate();

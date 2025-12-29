@@ -21,6 +21,12 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "services",
         ],
+        "ELEMENT_ID" => [
+            "PARENT" => "DATA_SOURCE",
+            "NAME" => "ID элемента со свойством SLIDER_SERVICES (если указан, берутся связанные элементы)",
+            "TYPE" => "STRING",
+            "DEFAULT" => "",
+        ],
         "SERVICES_TITLE" => [
             "PARENT" => "VISUAL",
             "NAME" => "Заголовок сервисов",
