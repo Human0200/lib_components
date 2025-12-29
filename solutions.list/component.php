@@ -92,13 +92,13 @@ if($arParams['CACHE_TIME'] > 0 && $cache->InitCache($arParams['CACHE_TIME'], $ca
     while($element = $dbElements->GetNext()) {
         // Получаем картинку
         $image = '';
-        if($element['PROPERTY_IMAGE_VALUE']) {
+        if($element['PREVIEW_PICTURE']) {
+            $image = CFile::GetPath($element['PREVIEW_PICTURE']);
+        } elseif($element['PROPERTY_IMAGE_VALUE']) {
             $image = CFile::GetPath($element['PROPERTY_IMAGE_VALUE']);
         } elseif($element['DETAIL_PICTURE']) {
             $image = CFile::GetPath($element['DETAIL_PICTURE']);
-        } elseif($element['PREVIEW_PICTURE']) {
-            $image = CFile::GetPath($element['PREVIEW_PICTURE']);
-        } elseif($element['PROPERTY_LOGO_VALUE']) {
+        }  elseif($element['PROPERTY_LOGO_VALUE']) {
             $image = CFile::GetPath($element['PROPERTY_LOGO_VALUE']);
         }
         
