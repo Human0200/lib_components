@@ -39,6 +39,62 @@ class LandingPageComponent extends CBitrixComponent
     }
 
     /**
+     * Получает данные из связанных элементов через свойство BLOCK
+     */
+    protected function getLinkedBlocksData($props, $propertyCode = 'BLOCK')
+    {
+        $result = [];
+        
+        if (empty($props[$propertyCode]['VALUE'])) {
+            return $result;
+        }
+        
+        $blockValues = $props[$propertyCode]['VALUE'];
+        
+        // Если это не массив, преобразуем в массив
+        if (!is_array($blockValues)) {
+            $blockValues = [$blockValues];
+        }
+        
+        $cardIndex = 1;
+        foreach ($blockValues as $blockValue) {
+            // Проверяем формат данных - это может быть структура с SUB_VALUES
+            if (is_array($blockValue) && isset($blockValue['SUB_VALUES'])) {
+                $subValues = $blockValue['SUB_VALUES'];
+                
+                // Извлекаем данные из подсвойств
+                $cardData = [];
+                
+                // DESCRIPTION
+                if (isset($subValues['DESCRIPTION']['VALUE'])) {
+                    $descValue = $subValues['DESCRIPTION']['VALUE'];
+                    if (is_array($descValue) && isset($descValue['TEXT'])) {
+                        $cardData['DESCRIPTION'] = $descValue['TEXT'];
+                    } else {
+                        $cardData['DESCRIPTION'] = $descValue;
+                    }
+                }
+                
+                // IMAGE
+                if (isset($subValues['IMAGE']['VALUE'])) {
+                    $imageId = $subValues['IMAGE']['VALUE'];
+                    $cardData['IMAGE'] = CFile::GetPath($imageId);
+                }
+                
+                // TITLE
+                if (isset($subValues['TITLE']['VALUE'])) {
+                    $cardData['TITLE'] = $subValues['TITLE']['VALUE'];
+                }
+                
+                $result['CARD_' . $cardIndex] = $cardData;
+                $cardIndex++;
+            }
+        }
+        
+        return $result;
+    }
+
+    /**
      * Получает динамические данные из элемента инфоблока
      */
     protected function getIblockData()
@@ -64,8 +120,8 @@ class LandingPageComponent extends CBitrixComponent
             $fields = $obj->GetFields();
             $props = $obj->GetProperties();
 
+            // Базовые данные TOPBAR
             $result = [
-                // === TOPBAR данные (уже есть) ===
                 'TITLE' => $fields['NAME'] ?? '',
                 'SUBTITLE' => $fields['PREVIEW_TEXT'] ?? '',
                 'TAGLINE' => $fields['DETAIL_TEXT'] ?? '',
@@ -78,37 +134,40 @@ class LandingPageComponent extends CBitrixComponent
                 'CARD_2_TEXT' => $props['CARD_2_TEXT']['VALUE'] ?? '',
                 'CARD_3_NUMBER' => $props['PRICE']['VALUE'] ?? '',
                 'CARD_3_TEXT' => $props['CARD_3_TEXT']['VALUE'] ?? '',
-
-                // === WHOM CARD 1 ===
-                'WHOM_CARD_1_TITLE' => $props['TITLE_BLOCK_1']['VALUE'] ?? '',
-                'WHOM_CARD_1_TEXT' => $props['COUNT_BLOCK_1']['VALUE'] ?? '',
-                'WHOM_CARD_1_IMAGE' => !empty($props['IMAGE_BLOCK_1']['VALUE'])
-                    ? \CFile::GetPath($props['IMAGE_BLOCK_1']['VALUE']) : '',
-                'WHOM_CARD_1_BACK_SUBTITLE' => $props['COUNT_BLOCK_1']['VALUE'] ?? '',
-                'WHOM_CARD_1_BACK_TITLE' => $props['TITLE_BLOCK_1']['VALUE'] ?? '',
-                'WHOM_CARD_1_BACK_TEXT' => $props['DESCRIPTION_BLOCK_1']['VALUE']['TEXT'] ?? $props['DESCRIPTION_BLOCK_1']['VALUE'] ?? '',
-
-                // === WHOM CARD 2 ===
-                'WHOM_CARD_2_TITLE' => $props['TITLE_BLOCK_2']['VALUE'] ?? '',
-                'WHOM_CARD_2_TEXT' => $props['COUNT_BLOCK_2']['VALUE'] ?? '',
-                'WHOM_CARD_2_IMAGE' => !empty($props['IMAGE_BLOCK_2']['VALUE'])
-                    ? \CFile::GetPath($props['IMAGE_BLOCK_2']['VALUE']) : '',
-                'WHOM_CARD_2_BACK_SUBTITLE' => $props['COUNT_BLOCK_2']['VALUE'] ?? '',
-                'WHOM_CARD_2_BACK_TITLE' => $props['TITLE_BLOCK_2']['VALUE'] ?? '',
-                'WHOM_CARD_2_BACK_TEXT' => $props['DESCRIPTION_BLOCK_2']['VALUE']['TEXT'] ?? $props['DESCRIPTION_BLOCK_2']['VALUE'] ?? '',
-
-                // === WHOM CARD 3 ===
-                'WHOM_CARD_3_TITLE' => $props['TITLE_BLOCK_3']['VALUE'] ?? '',
-                'WHOM_CARD_3_TEXT' => $props['COUNT_BLOCK_3']['VALUE'] ?? '',
-                'WHOM_CARD_3_IMAGE' => !empty($props['IMAGE_BLOCK_3']['VALUE'])
-                    ? \CFile::GetPath($props['IMAGE_BLOCK_3']['VALUE']) : '',
-                'WHOM_CARD_3_BACK_SUBTITLE' => $props['COUNT_BLOCK_3']['VALUE'] ?? '',
-                'WHOM_CARD_3_BACK_TITLE' => $props['TITLE_BLOCK_3']['VALUE'] ?? '',
-                'WHOM_CARD_3_BACK_TEXT' => $props['DESCRIPTION_BLOCK_3']['VALUE']['TEXT'] ?? $props['DESCRIPTION_BLOCK_3']['VALUE'] ?? '',
-
                 'DYNAMIC_PROPS' => $props
             ];
+
+            // Получаем данные для WHOM из связанных блоков через свойство BLOCK
+            $linkedBlocksData = $this->getLinkedBlocksData($props, 'BLOCK');
+            
+            if (!empty($linkedBlocksData)) {
+                foreach ($linkedBlocksData as $cardKey => $cardData) {
+                    $cardNum = str_replace('CARD_', '', $cardKey);
+                    
+                    $result['WHOM_CARD_' . $cardNum . '_TITLE'] = $cardData['TITLE'] ?? '';
+                    $result['WHOM_CARD_' . $cardNum . '_IMAGE'] = $cardData['IMAGE'] ?? '';
+                    $result['WHOM_CARD_' . $cardNum . '_BACK_TEXT'] = $cardData['DESCRIPTION'] ?? '';
+                    
+                    // Если нет отдельных значений для текста и subtitle, используем TITLE
+                    $result['WHOM_CARD_' . $cardNum . '_TEXT'] = $cardData['TITLE'] ?? '';
+                    $result['WHOM_CARD_' . $cardNum . '_BACK_SUBTITLE'] = $cardData['TITLE'] ?? '';
+                    $result['WHOM_CARD_' . $cardNum . '_BACK_TITLE'] = $cardData['TITLE'] ?? '';
+                }
+            } else {
+                // Fallback на старый формат (прямые свойства)
+                for ($i = 1; $i <= 3; $i++) {
+                    $result['WHOM_CARD_' . $i . '_TITLE'] = $props['TITLE_BLOCK_' . $i]['VALUE'] ?? '';
+                    $result['WHOM_CARD_' . $i . '_TEXT'] = $props['COUNT_BLOCK_' . $i]['VALUE'] ?? '';
+                    $result['WHOM_CARD_' . $i . '_IMAGE'] = !empty($props['IMAGE_BLOCK_' . $i]['VALUE'])
+                        ? \CFile::GetPath($props['IMAGE_BLOCK_' . $i]['VALUE']) : '';
+                    $result['WHOM_CARD_' . $i . '_BACK_SUBTITLE'] = $props['COUNT_BLOCK_' . $i]['VALUE'] ?? '';
+                    $result['WHOM_CARD_' . $i . '_BACK_TITLE'] = $props['TITLE_BLOCK_' . $i]['VALUE'] ?? '';
+                    $result['WHOM_CARD_' . $i . '_BACK_TEXT'] = $props['DESCRIPTION_BLOCK_' . $i]['VALUE']['TEXT'] 
+                        ?? $props['DESCRIPTION_BLOCK_' . $i]['VALUE'] ?? '';
+                }
+            }
         }
+        
         return $result;
     }
 
@@ -140,6 +199,7 @@ class LandingPageComponent extends CBitrixComponent
         $this->arResult['WHOM_PARAMS'] = $this->getBlockParams('WHOM');
         $this->arResult['TOOLS_PARAMS'] = $this->getBlockParams('TOOLS');
         $this->arResult['READY_PARAMS'] = $this->getBlockParams('READY');
+        $this->arResult['BENEFITS_PARAMS'] = $this->getBlockParams('BENEFITS');
         
         // Добавляем CSS класс для обертки
         $this->arResult['CSS_CLASS'] = $this->arParams['CSS_CLASS'] ?? '';
@@ -147,7 +207,7 @@ class LandingPageComponent extends CBitrixComponent
         $dynamicData = $this->getIblockData();
 
         if (!empty($dynamicData)) {
-            // === TOPBAR маппинг (уже есть) ===
+            // === TOPBAR маппинг ===
             $topbarMapping = [
                 'TITLE' => 'TITLE',
                 'SUBTITLE' => 'SUBTITLE',
@@ -206,7 +266,13 @@ class LandingPageComponent extends CBitrixComponent
             $this->arResult['TOPBAR_PARAMS']['IBLOCK_PROPS'] = $dynamicData['DYNAMIC_PROPS'];
             $this->arResult['WHOM_PARAMS']['IBLOCK_PROPS'] = $dynamicData['DYNAMIC_PROPS'];
             
-            // Передаем ELEMENT_ID в READY_PARAMS для связанных элементов
+            // === TOOLS - передаем IBLOCK_ID и ELEMENT_ID ===
+            if ($this->arParams['IBLOCK_ID'] > 0 && $this->arParams['ELEMENT_ID'] > 0) {
+                $this->arResult['TOOLS_PARAMS']['IBLOCK_ID'] = $this->arParams['IBLOCK_ID'];
+                $this->arResult['TOOLS_PARAMS']['ELEMENT_ID'] = $this->arParams['ELEMENT_ID'];
+            }
+            
+            // === READY - передаем ELEMENT_ID для связанных элементов ===
             if ($this->arParams['ELEMENT_ID'] > 0) {
                 $this->arResult['READY_PARAMS']['ELEMENT_ID'] = $this->arParams['ELEMENT_ID'];
             }
@@ -217,7 +283,8 @@ class LandingPageComponent extends CBitrixComponent
             'topbar' => $this->arParams['TOPBAR_TEMPLATE'] ?? '.default',
             'whom' => $this->arParams['WHOM_CARDS_TEMPLATE'] ?? '.default',
             'tools' => $this->arParams['TOOLS_TEMPLATE'] ?? '.default',
-            'ready' => $this->arParams['READY_TEMPLATE'] ?? '.default', // ← Добавлено!
+            'ready' => $this->arParams['READY_TEMPLATE'] ?? '.default',
+            'benefits' => $this->arParams['BENEFITS_TEMPLATE'] ?? '.default',
         ];
 
         $this->includeComponentTemplate();

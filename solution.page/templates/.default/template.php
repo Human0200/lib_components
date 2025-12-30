@@ -19,6 +19,7 @@ $componentMap = [
     'whom' => 'leadspace:whom.cards',
     'tools' => 'leadspace:bitrix24.tools',
     'ready' => 'leadspace:ready.section',
+    'benefits' => 'leadspace:crm.benefits',
 ];
 
 // CSS класс для обертки

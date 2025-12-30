@@ -1,5 +1,5 @@
 <?php
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
 // Подключаем модуль инфоблоков для формирования списка
 if (!\Bitrix\Main\Loader::includeModule('iblock')) {
@@ -80,7 +80,7 @@ $arComponentParameters = [
             "DEFAULT" => "topbar,whom,tools,ready",
             "COLS" => 50,
         ],
-        
+
         // === ШАБЛОНЫ КОМПОНЕНТОВ ===
         "TOPBAR_TEMPLATE" => [
             "PARENT" => "TEMPLATES",
@@ -106,7 +106,13 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => ".default",
         ],
-        
+        "BENEFITS_TEMPLATE" => [
+            "PARENT" => "TEMPLATES",
+            "NAME" => "Шаблон для Benefits",
+            "TYPE" => "STRING",
+            "DEFAULT" => ".default",
+        ],
+
         // === ПАРАМЕТРЫ TOPBAR ===
         "TOPBAR_IMAGE" => [
             "PARENT" => "TOPBAR",
@@ -156,7 +162,7 @@ $arComponentParameters = [
             "TYPE" => "TEXT",
             "DEFAULT" => "*входит в счет приобретения годовой лицензии через нас",
         ],
-        
+
         // Карточки Topbar
         "TOPBAR_CARD_1_TEXT" => [
             "PARENT" => "TOPBAR_CARDS",
@@ -224,7 +230,7 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "т.р",
         ],
-        
+
         // Кнопки Topbar
         "TOPBAR_BUTTON_1_TEXT" => [
             "PARENT" => "TOPBAR_BUTTONS",
@@ -256,7 +262,7 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "#",
         ],
-        
+
         // === ПАРАМЕТРЫ WHOM CARDS ===
         "WHOM_MARK" => [
             "PARENT" => "WHOM",
@@ -282,7 +288,7 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "#",
         ],
-        
+
         // Карточки Whom
         "WHOM_CARD_1_IMAGE" => [
             "PARENT" => "WHOM_CARD_1",
@@ -320,7 +326,7 @@ $arComponentParameters = [
             "TYPE" => "TEXT",
             "DEFAULT" => "Идеальное решение для частной практики",
         ],
-        
+
         // Карточка 2
         "WHOM_CARD_2_IMAGE" => [
             "PARENT" => "WHOM_CARD_2",
@@ -358,7 +364,7 @@ $arComponentParameters = [
             "TYPE" => "TEXT",
             "DEFAULT" => "Масштабируемое решение для роста бизнеса",
         ],
-        
+
         // Карточка 3
         "WHOM_CARD_3_IMAGE" => [
             "PARENT" => "WHOM_CARD_3",
@@ -396,7 +402,7 @@ $arComponentParameters = [
             "TYPE" => "TEXT",
             "DEFAULT" => "Корпоративное решение для больших команд",
         ],
-        
+
         // === ПАРАМЕТРЫ TOOLS ===
         "TOOLS_MARK_TEXT" => [
             "PARENT" => "TOOLS",
@@ -422,7 +428,7 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "Что внутри готового решения?",
         ],
-        
+
         // Инструмент 1
         "TOOLS_TOOL_1_NAME" => [
             "PARENT" => "TOOLS_1",
@@ -490,7 +496,7 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "",
         ],
-        
+
         // Инструмент 2
         "TOOLS_TOOL_2_NAME" => [
             "PARENT" => "TOOLS_2",
@@ -558,7 +564,7 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "",
         ],
-        
+
         // === ПАРАМЕТРЫ READY SECTION ===
         // Настройки инфоблока для ready
         "READY_IBLOCK_ID" => [
@@ -584,7 +590,116 @@ $arComponentParameters = [
             "VALUES" => $arIBlockTypes,
             "DEFAULT" => "services",
         ],
-        
+
+        //параметры Benefits
+        "BENEFITS_MARK" => [
+            "PARENT" => "BASE",
+            "NAME" => "Метка (mark)",
+            "TYPE" => "STRING",
+            "DEFAULT" => "СRM-система",
+        ],
+        "BENEFITS_TAGLINE_ROW_1" => [
+            "PARENT" => "BASE",
+            "NAME" => "Слоган - строка 1",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Ваша CRM уже готова:",
+        ],
+        "BENEFITS_TAGLINE_ROW_2" => [
+            "PARENT" => "BASE",
+            "NAME" => "Слоган - строка 2",
+            "TYPE" => "STRING",
+            "DEFAULT" => "разработана с учетом всех особенностей ниши",
+        ],
+        "BENEFITS_TITLE" => [
+            "PARENT" => "BASE",
+            "NAME" => "Заголовок",
+            "TYPE" => "STRING",
+            "DEFAULT" => "СRM-система помогает:",
+        ],
+        "BENEFITS_CARD_1_TEXT" => [
+            "PARENT" => "CARD_1",
+            "NAME" => "Карточка 1 - Текст",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Автоматизировать коммуникации с клиентами",
+        ],
+        "BENEFITS_CARD_1_ICON" => [
+            "PARENT" => "CARD_1",
+            "NAME" => "Карточка 1 - Путь к SVG иконке",
+            "TYPE" => "STRING",
+            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Business Conversation.svg',
+        ],
+        "BENEFITS_CARD_2_TEXT" => [
+            "PARENT" => "CARD_2",
+            "NAME" => "Карточка 2 - Текст",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Повышать эффективность команды",
+        ],
+        "BENEFITS_CARD_2_ICON" => [
+            "PARENT" => "CARD_2",
+            "NAME" => "Карточка 2 - Путь к SVG иконке",
+            "TYPE" => "STRING",
+            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/SvgjsG1681.svg',
+        ],
+        "BENEFITS_CARD_3_TEXT" => [
+            "PARENT" => "CARD_3",
+            "NAME" => "Карточка 3 - Текст",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Визуализировать данные и генерировать отчёты",
+        ],
+        "BENEFITS_CARD_3_ICON" => [
+            "PARENT" => "CARD_3",
+            "NAME" => "Карточка 3 - Путь к SVG иконке",
+            "TYPE" => "STRING",
+            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Duplicate Copy.svg',
+        ],
+        "BENEFITS_CARD_4_TEXT" => [
+            "PARENT" => "CARD_4",
+            "NAME" => "Карточка 4 - Текст",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Выстроить систему работы с клиентской базой",
+        ],
+        "BENEFITS_CARD_4_ICON" => [
+            "PARENT" => "CARD_4",
+            "NAME" => "Карточка 4 - Путь к SVG иконке",
+            "TYPE" => "STRING",
+            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Business Hierarchy.svg',
+        ],
+        "BENEFITS_CARD_5_TEXT" => [
+            "PARENT" => "CARD_5",
+            "NAME" => "Карточка 5 - Текст",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Управлять задачами и сроками",
+        ],
+        "BENEFITS_CARD_5_ICON" => [
+            "PARENT" => "CARD_5",
+            "NAME" => "Карточка 5 - Путь к SVG иконке",
+            "TYPE" => "STRING",
+            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Group 19808.svg',
+        ],
+        "BENEFITS_CARD_6_TEXT" => [
+            "PARENT" => "CARD_6",
+            "NAME" => "Карточка 6 - Текст",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Анализировать эффективность работы",
+        ],
+        "BENEFITS_CARD_6_ICON" => [
+            "PARENT" => "CARD_6",
+            "NAME" => "Карточка 6 - Путь к SVG иконке",
+            "TYPE" => "STRING",
+            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Business Growth.svg',
+        ],
+        "CACHE_TIME" => [
+            "DEFAULT" => 3600,
+        ],
+        "GROUPS" => [
+            "CARD_1" => ["NAME" => "Карточка 1"],
+            "CARD_2" => ["NAME" => "Карточка 2"],
+            "CARD_3" => ["NAME" => "Карточка 3"],
+            "CARD_4" => ["NAME" => "Карточка 4"],
+            "CARD_5" => ["NAME" => "Карточка 5"],
+            "CARD_6" => ["NAME" => "Карточка 6"],
+        ],
+
         // Настройки отображения
         "READY_SHOW_SERVICES" => [
             "PARENT" => "READY",
@@ -598,7 +713,7 @@ $arComponentParameters = [
             "TYPE" => "CHECKBOX",
             "DEFAULT" => "Y",
         ],
-        
+
         // Количество и сортировка
         "READY_ITEMS_COUNT" => [
             "PARENT" => "READY",
@@ -629,7 +744,7 @@ $arComponentParameters = [
             ],
             "DEFAULT" => "ASC",
         ],
-        
+
         // Заголовки
         "READY_SERVICES_TITLE" => [
             "PARENT" => "READY_SERVICES",
@@ -643,7 +758,7 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "Интеграции с нишевыми сервисами для бизнеса",
         ],
-        
+
         // === ДОПОЛНИТЕЛЬНЫЕ НАСТРОЙКИ ===
         "CSS_CLASS" => [
             "PARENT" => "ADDITIONAL",
@@ -651,7 +766,7 @@ $arComponentParameters = [
             "TYPE" => "STRING",
             "DEFAULT" => "",
         ],
-        
+
         "CACHE_TIME" => [
             "DEFAULT" => 3600,
         ],
