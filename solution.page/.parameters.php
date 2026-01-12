@@ -52,6 +52,13 @@ $arComponentParameters = [
         "READY_SERVICES" => ["NAME" => "Ready Section - Сервисы"],
         "READY_BUSINESS" => ["NAME" => "Ready Section - Бизнес-интеграции"],
         "ADDITIONAL" => ["NAME" => "Дополнительно"],
+        "BENEFITS" => ["NAME" => "Benefits - Основное"],
+        "BENEFITS_CARD_1" => ["NAME" => "Benefits - Карточка 1"],
+        "BENEFITS_CARD_2" => ["NAME" => "Benefits - Карточка 2"],
+        "BENEFITS_CARD_3" => ["NAME" => "Benefits - Карточка 3"],
+        "BENEFITS_CARD_4" => ["NAME" => "Benefits - Карточка 4"],
+        "BENEFITS_CARD_5" => ["NAME" => "Benefits - Карточка 5"],
+        "BENEFITS_CARD_6" => ["NAME" => "Benefits - Карточка 6"],
     ],
 
     "PARAMETERS" => [
@@ -591,115 +598,6 @@ $arComponentParameters = [
             "DEFAULT" => "services",
         ],
 
-        //параметры Benefits
-        "BENEFITS_MARK" => [
-            "PARENT" => "BASE",
-            "NAME" => "Метка (mark)",
-            "TYPE" => "STRING",
-            "DEFAULT" => "СRM-система",
-        ],
-        "BENEFITS_TAGLINE_ROW_1" => [
-            "PARENT" => "BASE",
-            "NAME" => "Слоган - строка 1",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Ваша CRM уже готова:",
-        ],
-        "BENEFITS_TAGLINE_ROW_2" => [
-            "PARENT" => "BASE",
-            "NAME" => "Слоган - строка 2",
-            "TYPE" => "STRING",
-            "DEFAULT" => "разработана с учетом всех особенностей ниши",
-        ],
-        "BENEFITS_TITLE" => [
-            "PARENT" => "BASE",
-            "NAME" => "Заголовок",
-            "TYPE" => "STRING",
-            "DEFAULT" => "СRM-система помогает:",
-        ],
-        "BENEFITS_CARD_1_TEXT" => [
-            "PARENT" => "CARD_1",
-            "NAME" => "Карточка 1 - Текст",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Автоматизировать коммуникации с клиентами",
-        ],
-        "BENEFITS_CARD_1_ICON" => [
-            "PARENT" => "CARD_1",
-            "NAME" => "Карточка 1 - Путь к SVG иконке",
-            "TYPE" => "STRING",
-            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Business Conversation.svg',
-        ],
-        "BENEFITS_CARD_2_TEXT" => [
-            "PARENT" => "CARD_2",
-            "NAME" => "Карточка 2 - Текст",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Повышать эффективность команды",
-        ],
-        "BENEFITS_CARD_2_ICON" => [
-            "PARENT" => "CARD_2",
-            "NAME" => "Карточка 2 - Путь к SVG иконке",
-            "TYPE" => "STRING",
-            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/SvgjsG1681.svg',
-        ],
-        "BENEFITS_CARD_3_TEXT" => [
-            "PARENT" => "CARD_3",
-            "NAME" => "Карточка 3 - Текст",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Визуализировать данные и генерировать отчёты",
-        ],
-        "BENEFITS_CARD_3_ICON" => [
-            "PARENT" => "CARD_3",
-            "NAME" => "Карточка 3 - Путь к SVG иконке",
-            "TYPE" => "STRING",
-            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Duplicate Copy.svg',
-        ],
-        "BENEFITS_CARD_4_TEXT" => [
-            "PARENT" => "CARD_4",
-            "NAME" => "Карточка 4 - Текст",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Выстроить систему работы с клиентской базой",
-        ],
-        "BENEFITS_CARD_4_ICON" => [
-            "PARENT" => "CARD_4",
-            "NAME" => "Карточка 4 - Путь к SVG иконке",
-            "TYPE" => "STRING",
-            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Business Hierarchy.svg',
-        ],
-        "BENEFITS_CARD_5_TEXT" => [
-            "PARENT" => "CARD_5",
-            "NAME" => "Карточка 5 - Текст",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Управлять задачами и сроками",
-        ],
-        "BENEFITS_CARD_5_ICON" => [
-            "PARENT" => "CARD_5",
-            "NAME" => "Карточка 5 - Путь к SVG иконке",
-            "TYPE" => "STRING",
-            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Group 19808.svg',
-        ],
-        "BENEFITS_CARD_6_TEXT" => [
-            "PARENT" => "CARD_6",
-            "NAME" => "Карточка 6 - Текст",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Анализировать эффективность работы",
-        ],
-        "BENEFITS_CARD_6_ICON" => [
-            "PARENT" => "CARD_6",
-            "NAME" => "Карточка 6 - Путь к SVG иконке",
-            "TYPE" => "STRING",
-            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Business Growth.svg',
-        ],
-        "CACHE_TIME" => [
-            "DEFAULT" => 3600,
-        ],
-        "GROUPS" => [
-            "CARD_1" => ["NAME" => "Карточка 1"],
-            "CARD_2" => ["NAME" => "Карточка 2"],
-            "CARD_3" => ["NAME" => "Карточка 3"],
-            "CARD_4" => ["NAME" => "Карточка 4"],
-            "CARD_5" => ["NAME" => "Карточка 5"],
-            "CARD_6" => ["NAME" => "Карточка 6"],
-        ],
-
         // Настройки отображения
         "READY_SHOW_SERVICES" => [
             "PARENT" => "READY",
@@ -757,6 +655,103 @@ $arComponentParameters = [
             "NAME" => "Заголовок бизнес-интеграций",
             "TYPE" => "STRING",
             "DEFAULT" => "Интеграции с нишевыми сервисами для бизнеса",
+        ],
+        // === ПАРАМЕТРЫ BENEFITS ===
+        "BENEFITS_MARK" => [
+            "PARENT" => "BENEFITS",
+            "NAME" => "Метка (mark)",
+            "TYPE" => "STRING",
+            "DEFAULT" => "СRM-система",
+        ],
+        "BENEFITS_TAGLINE_ROW_1" => [
+            "PARENT" => "BENEFITS",
+            "NAME" => "Слоган - строка 1",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Ваша CRM уже готова:",
+        ],
+        "BENEFITS_TAGLINE_ROW_2" => [
+            "PARENT" => "BENEFITS",
+            "NAME" => "Слоган - строка 2",
+            "TYPE" => "STRING",
+            "DEFAULT" => "разработана с учетом всех особенностей ниши",
+        ],
+        "BENEFITS_TITLE" => [
+            "PARENT" => "BASE",
+            "NAME" => "Заголовок",
+            "TYPE" => "STRING",
+            "DEFAULT" => "СRM-система помогает:",
+        ],
+        "BENEFITS_CARD_1_TEXT" => [
+            "PARENT" => "BENEFITS_CARD_1",
+            "NAME" => "Карточка 1 - Текст",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Автоматизировать коммуникации с клиентами",
+        ],
+        "BENEFITS_CARD_1_ICON" => [
+            "PARENT" => "BENEFITS_CARD_1",
+            "NAME" => "Карточка 1 - Путь к SVG иконке",
+            "TYPE" => "STRING",
+            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Business Conversation.svg',
+        ],
+        "BENEFITS_CARD_2_TEXT" => [
+            "PARENT" => "BENEFITS_CARD_2",
+            "NAME" => "Карточка 2 - Текст",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Повышать эффективность команды",
+        ],
+        "BENEFITS_CARD_2_ICON" => [
+            "PARENT" => "BENEFITS_CARD_2",
+            "NAME" => "Карточка 2 - Путь к SVG иконке",
+            "TYPE" => "STRING",
+            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/SvgjsG1681.svg',
+        ],
+        "BENEFITS_CARD_3_TEXT" => [
+            "PARENT" => "BENEFITS_CARD_3",
+            "NAME" => "Карточка 3 - Текст",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Визуализировать данные и генерировать отчёты",
+        ],
+        "BENEFITS_CARD_3_ICON" => [
+            "PARENT" => "BENEFITS_CARD_3",
+            "NAME" => "Карточка 3 - Путь к SVG иконке",
+            "TYPE" => "STRING",
+            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Duplicate Copy.svg',
+        ],
+        "BENEFITS_CARD_4_TEXT" => [
+            "PARENT" => "BENEFITS_CARD_4",
+            "NAME" => "Карточка 4 - Текст",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Выстроить систему работы с клиентской базой",
+        ],
+        "BENEFITS_CARD_4_ICON" => [
+            "PARENT" => "BENEFITS_CARD_4",
+            "NAME" => "Карточка 4 - Путь к SVG иконке",
+            "TYPE" => "STRING",
+            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Business Hierarchy.svg',
+        ],
+        "BENEFITS_CARD_5_TEXT" => [
+            "PARENT" => "BENEFITS_CARD_5",
+            "NAME" => "Карточка 5 - Текст",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Управлять задачами и сроками",
+        ],
+        "BENEFITS_CARD_5_ICON" => [
+            "PARENT" => "BENEFITS_CARD_5",
+            "NAME" => "Карточка 5 - Путь к SVG иконке",
+            "TYPE" => "STRING",
+            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Group 19808.svg',
+        ],
+        "BENEFITS_CARD_6_TEXT" => [
+            "PARENT" => "BENEFITS_CARD_6",
+            "NAME" => "Карточка 6 - Текст",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Анализировать эффективность работы",
+        ],
+        "BENEFITS_CARD_6_ICON" => [
+            "PARENT" => "BENEFITS_CARD_6",
+            "NAME" => "Карточка 6 - Путь к SVG иконке",
+            "TYPE" => "STRING",
+            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Business Growth.svg',
         ],
 
         // === ДОПОЛНИТЕЛЬНЫЕ НАСТРОЙКИ ===
