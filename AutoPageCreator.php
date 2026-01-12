@@ -466,230 +466,182 @@ $APPLICATION->SetTitle("TITLE_PLACEHOLDER");
 
 <?php
 $APPLICATION->IncludeComponent(
-    "leadspace:topbar", 
-    ".default", 
-    [
-        "IMAGE" => "/local/templates/leadspace/assets/images/topbar/01.webp",
-        "TAGLINE" => "Описание решения...",
-        "TITLE" => "TITLE_PLACEHOLDER",
-        "SUBTITLE" => "Полностью готовое решение для ниши",
-        "PRICE_OLD" => "",
-        "PRICE_NEW" => "",
-        "PRICE_CURRENCY" => "",
-        "PRICE_NOTE" => "",
-        "CARD_1_TEXT" => "Мы знаем с чего начать. Без лишних экспериментов.",
-        "CARD_1_NUMBER" => "20+",
-        "CARD_1_LABEL" => "установок",
-        "CARD_2_TEXT" => "Сэкономим ваше время: начнем с проверенных решений.",
-        "CARD_2_PREFIX" => "до",
-        "CARD_2_NUMBER" => "7",
-        "CARD_2_LABEL" => "дней",
-        "CARD_3_TEXT" => "Стоимость с обучением и интеграциями",
-        "CARD_3_PREFIX" => "от",
-        "CARD_3_NUMBER" => "150",
-        "CARD_3_LABEL" => "т.р",
-        "BUTTON_1_TEXT" => "заказать внедрение",
-        "BUTTON_1_LINK" => "#modal-feedback",
-        "BUTTON_1_CURSOR" => "Перейти",
-        "BUTTON_2_TEXT" => "Попробовать 7 дней бесплатно",
-        "BUTTON_2_LINK" => "#modal-feedback",
-        "CACHE_TIME" => "3600",
-        "CACHE_TYPE" => "A"
-    ],
-    false
+	"leadspace:solution.page", 
+	".default", 
+	[
+		"COMPONENT_TEMPLATE" => ".default",
+		"BLOCKS_ORDER" => "topbar,benefits,whom,tools,ready",
+		"TOPBAR_TEMPLATE" => ".default",
+		"WHOM_CARDS_TEMPLATE" => ".default",
+		"TOOLS_TEMPLATE" => ".default",
+		"IBLOCK_ID" => "3",
+		"ELEMENT_ID" => "7",
+		"CACHE_TYPE" => "A",
+		"CACHE_TIME" => "3600",
+		"TOPBAR_IMAGE" => "",
+		"TOPBAR_TAGLINE" => "Банкротство физ.лиц это ответственная сфера",
+		"TOPBAR_TITLE" => "",
+		"TOPBAR_SUBTITLE" => "Полностью готовое решение для ниши",
+		"TOPBAR_PRICE_OLD" => "35 000 р",
+		"TOPBAR_PRICE_NEW" => "0",
+		"TOPBAR_PRICE_CURRENCY" => "рублей",
+		"TOPBAR_PRICE_NOTE" => "*входит в счет приобретения годовой лицензии через нас",
+		"TOPBAR_CARD_1_TEXT" => "90% клиентов получили одобрение",
+		"TOPBAR_CARD_1_NUMBER" => "22220+",
+		"TOPBAR_CARD_1_LABEL" => "установок",
+		"TOPBAR_CARD_2_TEXT" => "Быстрый старт работы",
+		"TOPBAR_CARD_2_PREFIX" => "до",
+		"TOPBAR_CARD_2_NUMBER" => "7",
+		"TOPBAR_CARD_2_LABEL" => "дней",
+		"TOPBAR_CARD_3_TEXT" => "Профессиональная поддержка",
+		"TOPBAR_CARD_3_PREFIX" => "от",
+		"TOPBAR_CARD_3_NUMBER" => "",
+		"TOPBAR_CARD_3_LABEL" => "т.р",
+		"TOPBAR_BUTTON_1_TEXT" => "Заказать внедрение",
+		"TOPBAR_BUTTON_1_LINK" => "#",
+		"TOPBAR_BUTTON_1_CURSOR" => "Перейти",
+		"TOPBAR_BUTTON_2_TEXT" => "Попробовать 7 дней бесплатно",
+		"TOPBAR_BUTTON_2_LINK" => "#",
+		"WHOM_MARK" => "для кого",
+		"WHOM_TITLE" => "Кому подходит данное решение?",
+		"WHOM_BUTTON_TEXT" => "Попробовать 7 дней бесплатно",
+		"WHOM_BUTTON_LINK" => "#",
+		"WHOM_CARD_1_IMAGE" => "/assets/images/whom/01.webp",
+		"WHOM_CARD_1_TITLE" => "Частным юристам",
+		"WHOM_CARD_1_TEXT" => "от|1|до|5|сотрудников",
+		"WHOM_CARD_1_BACK_SUBTITLE" => "Численность от 1 до 5 сотрудников",
+		"WHOM_CARD_1_BACK_TITLE" => "Частным юристам",
+		"WHOM_CARD_1_BACK_TEXT" => "Идеальное решение для частной практики",
+		"WHOM_CARD_2_IMAGE" => "/assets/images/whom/02.webp",
+		"WHOM_CARD_2_TITLE" => "Небольшим компаниям",
+		"WHOM_CARD_2_TEXT" => "от|3|до|50|сотрудников",
+		"WHOM_CARD_2_BACK_SUBTITLE" => "Численность от 3 до 50 сотрудников",
+		"WHOM_CARD_2_BACK_TITLE" => "Небольшим компаниям",
+		"WHOM_CARD_2_BACK_TEXT" => "Масштабируемое решение для роста бизнеса",
+		"WHOM_CARD_3_IMAGE" => "/assets/images/whom/03.webp",
+		"WHOM_CARD_3_TITLE" => "Юридическим компаниям",
+		"WHOM_CARD_3_TEXT" => "от|10|до|1000|сотрудников",
+		"WHOM_CARD_3_BACK_SUBTITLE" => "Численность от 10 до 1000 сотрудников",
+		"WHOM_CARD_3_BACK_TITLE" => "Юридическим компаниям",
+		"WHOM_CARD_3_BACK_TEXT" => "Корпоративное решение для больших команд",
+		"TOOLS_MARK_TEXT" => "что внутри",
+		"TOOLS_TAGLINE_ROW_1" => "Вместе с CRM-решением вы получите",
+		"TOOLS_TAGLINE_ROW_2" => "полный набор инструментов Битрикс24",
+		"TOOLS_TITLE" => "Что внутри готового решения?",
+		"TOOLS_TOOL_1_NAME" => "ЧАТ И ВИДЕОЗВОНКИ",
+		"TOOLS_TOOL_1_DESC_1" => "",
+		"TOOLS_TOOL_1_DESC_2" => "",
+		"TOOLS_TOOL_1_DESC_3" => "",
+		"TOOLS_TOOL_1_DESC_4" => "",
+		"TOOLS_TOOL_1_DESC_5" => "",
+		"TOOLS_TOOL_1_IMAGE_1" => "",
+		"TOOLS_TOOL_1_IMAGE_2" => "",
+		"TOOLS_TOOL_1_IMAGE_3" => "",
+		"TOOLS_TOOL_1_IMAGE_4" => "",
+		"TOOLS_TOOL_1_IMAGE_5" => "",
+		"TOOLS_TOOL_2_NAME" => "ЗАДАЧИ И ПРОЕКТЫ",
+		"TOOLS_TOOL_2_DESC_1" => "123",
+		"TOOLS_TOOL_2_DESC_2" => "123",
+		"TOOLS_TOOL_2_DESC_3" => "123",
+		"TOOLS_TOOL_2_DESC_4" => "123",
+		"TOOLS_TOOL_2_DESC_5" => "123",
+		"TOOLS_TOOL_2_IMAGE_1" => "123",
+		"TOOLS_TOOL_2_IMAGE_2" => "123",
+		"TOOLS_TOOL_2_IMAGE_3" => "123",
+		"TOOLS_TOOL_2_IMAGE_4" => "123",
+		"TOOLS_TOOL_2_IMAGE_5" => "123",
+		"CSS_CLASS" => "",
+		"READY_TEMPLATE" => ".default",
+		"READY_IBLOCK_ID" => "12",
+		"READY_IBLOCK_CODE" => "business_integrations",
+		"READY_IBLOCK_TYPE" => "news",
+		"READY_ELEMENT_ID" => "7",
+		"READY_ITEMS_COUNT" => "6",
+		"READY_SORT_BY" => "SORT",
+		"READY_SORT_ORDER" => "ASC",
+		"READY_SHOW_SERVICES" => "Y",
+		"READY_SHOW_BUSINESS" => "Y",
+		"READY_SERVICES_TITLE" => "100+ готовых интеграций и сервисов!",
+		"READY_BUSINESS_TITLE" => "Интеграции с нишевыми сервисами для бизнеса"
+	],
+	false
 );
 ?>
-
-<?php
-$APPLICATION->IncludeComponent(
-    "leadspace:crm.benefits", 
-    ".default", 
-    [
-        "MARK" => "СRM-система",
-        "TAGLINE_ROW_1" => "Ваша CRM уже готова:",
-        "TAGLINE_ROW_2" => "разработана с учетом всех особенностей ниши",
-        "TITLE" => "СRM-система помогает:",
-        "CARD_1_TEXT" => "Автоматизировать коммуникации с клиентами",
-        "CARD_1_ICON" => "/local/templates/leadspace/assets/images/icons/Business Conversation.svg",
-        "CARD_2_TEXT" => "Повышать эффективность команды",
-        "CARD_2_ICON" => "/local/templates/leadspace/assets/images/icons/SvgjsG1681.svg",
-        "CARD_3_TEXT" => "Визуализировать данные и генерировать отчёты",
-        "CARD_3_ICON" => "/local/templates/leadspace/assets/images/icons/Duplicate Copy.svg",
-        "CARD_4_TEXT" => "Выстроить систему работы с клиентской базой",
-        "CARD_4_ICON" => "/local/templates/leadspace/assets/images/icons/Business Hierarchy.svg",
-        "CARD_5_TEXT" => "Управлять задачами и сроками",
-        "CARD_5_ICON" => "/local/templates/leadspace/assets/images/icons/Group 19808.svg",
-        "CARD_6_TEXT" => "Анализировать эффективность работы",
-        "CARD_6_ICON" => "/local/templates/leadspace/assets/images/icons/Business Growth.svg",
-        "CACHE_TIME" => "3600",
-        "CACHE_TYPE" => "A"
-    ],
-    false
-);
-?>
-<?php
-$APPLICATION->IncludeComponent(
-    "leadspace:whom.cards", 
-    ".default", 
-    [
-        "MARK" => "для кого",
-        "TITLE" => "Кому подходит данное решение?",
-        "BUTTON_TEXT" => "Попробовать 7 дней бесплатно",
-        "BUTTON_LINK" => "#modal-feedback",
-        "CARD_1_IMAGE" => "/local/templates/leadspace/assets/images/whom/01.webp",
-        "CARD_1_TITLE" => "Небольшим компаниям",
-        "CARD_1_TEXT" => "от|1|до|5|сотрудников",
-        "CARD_1_BACK_SUBTITLE" => "Численность от 1 до 5 сотрудников",
-        "CARD_1_BACK_TITLE" => "Небольшим компаниям",
-        "CARD_1_BACK_TEXT" => "Описание...",
-        "CARD_2_IMAGE" => "/local/templates/leadspace/assets/images/whom/02.webp",
-        "CARD_2_TITLE" => "Средним компаниям",
-        "CARD_2_TEXT" => "от|3|до|50|сотрудников",
-        "CARD_2_BACK_SUBTITLE" => "Численность от 3 до 50 сотрудников",
-        "CARD_2_BACK_TITLE" => "Средним компаниям",
-        "CARD_2_BACK_TEXT" => "Описание...",
-        "CARD_3_IMAGE" => "/local/templates/leadspace/assets/images/whom/02.webp",
-        "CARD_3_TITLE" => "Крупным компаниям",
-        "CARD_3_TEXT" => "от|10|до|1000|сотрудников",
-        "CARD_3_BACK_SUBTITLE" => "Численность от 10 до 1 000 сотрудников",
-        "CARD_3_BACK_TITLE" => "Крупным компаниям",
-        "CARD_3_BACK_TEXT" => "Описание...",
-        "CACHE_TIME" => "3600",
-        "CACHE_TYPE" => "A"
-    ],
-    false
-);
-?>
-
 <?$APPLICATION->IncludeComponent(
-    "leadspace:bitrix24.tools", 
-    ".default", 
-    [
-        "MARK_TEXT" => "что внутри",
-        "TAGLINE_ROW_1" => "Вместе с CRM-решением вы получите",
-        "TAGLINE_ROW_2" => "полный набор инструментов Битрикс24 для работы",
-        "TITLE" => "Что внутри готового решения?",
-        "TOOL_1_NAME" => "ВОРОНКА СДЕЛОК \"ПРОДАЖИ\"",
-        "TOOL_1_DESC_1" => "Для систематизации и квалификации заявок клиентов из различных источников создана воронка \"Продажи\".",
-        "TOOL_1_DESC_2" => "С помощью открытых линий и настроенных роботов обращения корректно распределяются между сотрудниками.",
-        "TOOL_1_DESC_3" => "",
-        "TOOL_1_DESC_4" => "",
-        "TOOL_1_DESC_5" => "",
-        "TOOL_1_IMAGE_1" => "/upload/tools/01.webp",
-        "TOOL_1_IMAGE_2" => "/upload/tools/02.webp",
-        "TOOL_1_IMAGE_3" => "",
-        "TOOL_1_IMAGE_4" => "",
-        "TOOL_1_IMAGE_5" => "",
-        "TOOL_2_NAME" => "ЗАДАЧИ И ПРОЕКТЫ",
-        "TOOL_2_DESC_1" => "Описание инструмента...",
-        "TOOL_2_DESC_2" => "",
-        "TOOL_2_DESC_3" => "",
-        "TOOL_2_DESC_4" => "",
-        "TOOL_2_DESC_5" => "",
-        "TOOL_2_IMAGE_1" => "/upload/tools/06.webp",
-        "TOOL_2_IMAGE_2" => "/upload/tools/07.webp",
-        "TOOL_2_IMAGE_3" => "/upload/tools/08.webp",
-        "TOOL_2_IMAGE_4" => "",
-        "TOOL_2_IMAGE_5" => "",
-        "CACHE_TIME" => "3600",
-        "CACHE_TYPE" => "A"
-    ],
-    false
-);?>
-
-
-<?$APPLICATION->IncludeComponent(
-    "bitrix:main.include",
-    "",
-    [
-        "AREA_FILE_SHOW" => "file",
-        "AREA_FILE_SUFFIX" => "inc",
-        "EDIT_TEMPLATE" => "",
-        "PATH" => "/local/include/devices.php"
-    ]
+	"leadspace:individual.steps", 
+	"other", 
+	[
+		"IBLOCK_ID" => "4",
+		"CACHE_TIME" => "3600",
+		"COMPONENT_TEMPLATE" => "other",
+		"TITLE" => "Из чего складывается стоимость внедрения?",
+		"CACHE_TYPE" => "A",
+		"PAGE_CODE" => "bankrotstvo-fizicheskih-lic",
+		"MARK" => "Цены на лицензии и тарифы",
+		"REQUEST_TITLE" => "Вы сделали первый шаг к автоматизацииждем ваши заявки!",
+		"BUTTON_TEXT" => "заказать внедрение",
+		"BUTTON_LINK" => "#modal-feedback",
+		"TAGLINE_ROW_1" => "Подберите для своего дела наиболее подходящий",
+		"TAGLINE_ROW_2" => "и комфортный тарифный план."
+	],
+	false
 );?>
 
 <?php
 $APPLICATION->IncludeComponent(
-    "leadspace:ready.section",
-    "",
-    [
-        "IBLOCK_ID" => "12",
-        "IBLOCK_CODE" => "business_integrations",
-        "IBLOCK_TYPE" => "content",
-        "SERVICES_TITLE" => "100+ готовых интеграций и сервисов!",
-        "BUSINESS_TITLE" => "Интеграции с нишевыми сервисами для бизнеса",
-        "SHOW_SERVICES" => "Y",
-        "SHOW_BUSINESS" => "Y",
-        "ITEMS_COUNT" => "6",
-        "SORT_BY" => "SORT",
-        "SORT_ORDER" => "ASC",
-        "CACHE_TIME" => 3600
-    ]
+	"leadspace:tariffs.slider", 
+	".default", 
+	[
+		"IBLOCK_ID" => "7",
+		"TITLE" => "Тарифы наших работ",
+		"CACHE_TIME" => "3600",
+		"COMPONENT_TEMPLATE" => ".default",
+		"CACHE_TYPE" => "A"
+	],
+	false
 );
 ?>
 
 <?$APPLICATION->IncludeComponent(
-    "leadspace:individual.steps", 
-    "other", 
-    [
-        "IBLOCK_ID" => "4",
-        "CACHE_TIME" => "3600",
-        "TITLE" => "Из чего складывается стоимость внедрения?",
-        "CACHE_TYPE" => "A"
-    ],
-    false
+	"leadspace:bitrix24.licenses", 
+	".default", 
+	[
+		"IBLOCK_ID_CLOUD" => "9",
+		"IBLOCK_ID_BOXED" => "10",
+		"IBLOCK_ID_SUBSCRIPTION" => "11",
+		"CACHE_TIME" => "3600",
+		"COMPONENT_TEMPLATE" => ".default",
+		"MARK_TEXT" => "Мы не просто продаем — мы помогаем вам использовать Битрикс24",
+		"MARK_HIGHLIGHT" => "на полную мощность",
+		"TITLE" => "Лицензии Битрикс24",
+		"CAPTION" => "В соответствии с политикой 1С-Битрикс24 мы не продаем лицензии выше или ниже установленных цен",
+		"FOOTER_TEXT" => "В тарифах цены со скидкой 50% для тех, кто покупает подписку впервые",
+		"CACHE_TYPE" => "A",
+		"ENTERPRISE_OPTION_1_EMPLOYEES" => "250",
+		"ENTERPRISE_OPTION_1_PRICE_MONTH" => "33990",
+		"ENTERPRISE_OPTION_1_PRICE_YEAR" => "244728",
+		"ENTERPRISE_OPTION_2_EMPLOYEES" => "500",
+		"ENTERPRISE_OPTION_2_PRICE_MONTH" => "59990",
+		"ENTERPRISE_OPTION_2_PRICE_YEAR" => "431928",
+		"ENTERPRISE_OPTION_3_EMPLOYEES" => "1000",
+		"ENTERPRISE_OPTION_3_PRICE_MONTH" => "99990",
+		"ENTERPRISE_OPTION_3_PRICE_YEAR" => "719928",
+		"SUBSCRIPTION_CLOUD_OPTION_1_EMPLOYEES" => "250",
+		"SUBSCRIPTION_CLOUD_OPTION_1_PRICE_MONTH" => "4995",
+		"SUBSCRIPTION_CLOUD_OPTION_1_PRICE_YEAR" => "59940",
+		"SUBSCRIPTION_CLOUD_OPTION_2_EMPLOYEES" => "500",
+		"SUBSCRIPTION_CLOUD_OPTION_2_PRICE_MONTH" => "5995",
+		"SUBSCRIPTION_CLOUD_OPTION_2_PRICE_YEAR" => "71940",
+		"SUBSCRIPTION_CLOUD_OPTION_3_EMPLOYEES" => "1000",
+		"SUBSCRIPTION_CLOUD_OPTION_3_PRICE_MONTH" => "7495",
+		"SUBSCRIPTION_CLOUD_OPTION_3_PRICE_YEAR" => "89940",
+		"MORE_CAPTION" => "Цены указаны со скидкой 40% при условии покупки облачного тарифа и подписки BitrixGPT + Маркетплейс 
+в одном заказе (на 12 месяцев).
+Срок проведения акции с 1 декабря по 31 декабря 2025"
+	],
+	false
 );?>
 
-<?php
-$APPLICATION->IncludeComponent(
-    "leadspace:tariffs.slider", 
-    ".default", 
-    [
-        "IBLOCK_ID" => "7",
-        "TITLE" => "Тарифы наших работ",
-        "CACHE_TIME" => "3600",
-        "CACHE_TYPE" => "A"
-    ],
-    false
-);
-?>
-
-<?$APPLICATION->IncludeComponent(
-    "leadspace:bitrix24.licenses", 
-    ".default", 
-    [
-        "IBLOCK_ID_CLOUD" => "9",
-        "IBLOCK_ID_BOXED" => "10",
-        "IBLOCK_ID_SUBSCRIPTION" => "11",
-        "CACHE_TIME" => "3600",
-        "MARK_TEXT" => "Мы не просто продаем — мы помогаем вам использовать Битрикс24",
-        "MARK_HIGHLIGHT" => "на полную мощность",
-        "TITLE" => "Лицензии Битрикс24",
-        "CAPTION" => "В соответствии с политикой 1С-Битрикс24 мы не продаем лицензии выше или ниже установленных цен",
-        "FOOTER_TEXT" => "В таблице цены со скидкой 50% для тех, кто покупает подписку впервые",
-        "CACHE_TYPE" => "A",
-        "ENTERPRISE_OPTION_1_EMPLOYEES" => "250",
-        "ENTERPRISE_OPTION_1_PRICE_MONTH" => "33990",
-        "ENTERPRISE_OPTION_1_PRICE_YEAR" => "326280",
-        "ENTERPRISE_OPTION_2_EMPLOYEES" => "500",
-        "ENTERPRISE_OPTION_2_PRICE_MONTH" => "59990",
-        "ENTERPRISE_OPTION_2_PRICE_YEAR" => "575880",
-        "ENTERPRISE_OPTION_3_EMPLOYEES" => "1000",
-        "ENTERPRISE_OPTION_3_PRICE_MONTH" => "99990",
-        "ENTERPRISE_OPTION_3_PRICE_YEAR" => "959880",
-        "SUBSCRIPTION_CLOUD_OPTION_1_EMPLOYEES" => "250",
-        "SUBSCRIPTION_CLOUD_OPTION_1_PRICE_MONTH" => "4995",
-        "SUBSCRIPTION_CLOUD_OPTION_1_PRICE_YEAR" => "59940",
-        "SUBSCRIPTION_CLOUD_OPTION_2_EMPLOYEES" => "500",
-        "SUBSCRIPTION_CLOUD_OPTION_2_PRICE_MONTH" => "9995",
-        "SUBSCRIPTION_CLOUD_OPTION_2_PRICE_YEAR" => "119880",
-        "SUBSCRIPTION_CLOUD_OPTION_3_EMPLOYEES" => "1000",
-        "SUBSCRIPTION_CLOUD_OPTION_3_PRICE_MONTH" => "19995",
-        "SUBSCRIPTION_CLOUD_OPTION_3_PRICE_YEAR" => "239880"
-    ],
-    false
-);?>
 
 <?php
 $APPLICATION->IncludeComponent(
@@ -698,11 +650,13 @@ $APPLICATION->IncludeComponent(
     [
         "TAGLINE_TOP" => "купите лицензию через нас — и получите",
         "TAGLINE_BOTTOM" => "больше, чем просто доступ к Битрикс24",
+        
         "ITEM_1" => "1. Бесплатную службу поддержки на весь срок действия лицензии.",
         "ITEM_2" => "2. Часы обучения для пользователей при покупке лицензии на год.",
         "ITEM_3" => "3. Быстрое подключение лицензии. Мы активируем лицензию в тот же день!",
         "ITEM_4" => "",
         "ITEM_5" => "",
+        
         "CACHE_TIME" => 3600,
     ]
 );
@@ -710,32 +664,37 @@ $APPLICATION->IncludeComponent(
 
 <?php
 $APPLICATION->IncludeComponent(
-    "leadspace:reviews.slider",
-    ".default",
-    [
-        "IBLOCK_ID" => 8,
-        "MARK" => "отзывы",
-        "TITLE" => "Отзывы покупателей",
-        "TEXT" => "Нашим готовым решением пользуются уже 20 клиентов\nи мы регулярно получаем от них обратную связь.",
-        "CACHE_TIME" => 3600,
-    ]
+	"leadspace:reviews.slider", 
+	".default", 
+	[
+		"IBLOCK_ID" => "8",
+		"MARK" => "отзывы",
+		"TITLE" => "Отзывы покупателей",
+		"TEXT" => "Нашими готовыми решениями пользуются уже 170+ клиентов и мы регулярно получаем от них обратную связь.",
+		"CACHE_TIME" => "3600",
+		"COMPONENT_TEMPLATE" => ".default",
+		"CACHE_TYPE" => "A"
+	],
+	false
 );
 ?>
 
 <?$APPLICATION->IncludeComponent(
-    "leadspace:solutions.list", 
-    "other", 
-    [
-        "IBLOCK_ID" => "3",
-        "CACHE_TIME" => "3600",
-        "TITLE" => "Посмотреть все готовые решения",
-        "CACHE_TYPE" => "A"
-    ],
-    false
+	"leadspace:solutions.list", 
+	"other", 
+	[
+		"IBLOCK_ID" => "3",
+		"CACHE_TIME" => "3600",
+		"COMPONENT_TEMPLATE" => "other",
+		"TITLE" => "Посмотреть все готовые решения",
+		"CACHE_TYPE" => "N",
+		"SUBTITLE" => "",
+		"CHECK_404" => "Y"
+	],
+	false
 );?>
 
 <figure class="group-d3"></figure>
-
 <?$APPLICATION->IncludeComponent(
 	"bitrix:form.result.new", 
 	"feedback", 
@@ -765,30 +724,32 @@ $APPLICATION->IncludeComponent(
 	false
 );?>
 
-<?php
-$APPLICATION->IncludeComponent(
-    "bitrix:form.result.new",
-    "modal",
-    [
-        "WEB_FORM_ID" => "2", 
-        "IGNORE_CUSTOM_TEMPLATE" => "N",
-        "USE_EXTENDED_ERRORS" => "Y",
-        "SEF_MODE" => "N",
-        "CACHE_TYPE" => "A",
-        "CACHE_TIME" => "3600",
-        "LIST_URL" => "",
-        "EDIT_URL" => "",
-        "SUCCESS_URL" => "#form-success",
-        "CHAIN_ITEM_TEXT" => "",
-        "CHAIN_ITEM_LINK" => "",
-        "PRIVACY_URL" => "/privacy/",
-        "PERSONAL_DATA_URL" => "/personal-data/",
-        "BUTTON_TEXT" => "отправить",
-    ],
-    false
-);
-?>
-
+<?$APPLICATION->IncludeComponent(
+	"bitrix:form.result.new", 
+	"modal", 
+	[
+		"WEB_FORM_ID" => "2",
+		"IGNORE_CUSTOM_TEMPLATE" => "N",
+		"USE_EXTENDED_ERRORS" => "Y",
+		"SEF_MODE" => "N",
+		"CACHE_TYPE" => "A",
+		"CACHE_TIME" => "3600",
+		"LIST_URL" => "",
+		"EDIT_URL" => "",
+		"SUCCESS_URL" => "#form-success",
+		"CHAIN_ITEM_TEXT" => "",
+		"CHAIN_ITEM_LINK" => "",
+		"PRIVACY_URL" => "/privacy/",
+		"PERSONAL_DATA_URL" => "/personal-data/",
+		"BUTTON_TEXT" => "отправить",
+		"COMPONENT_TEMPLATE" => "modal",
+		"VARIABLE_ALIASES" => [
+			"WEB_FORM_ID" => "WEB_FORM_ID",
+			"RESULT_ID" => "RESULT_ID",
+		]
+	],
+	false
+);?>
 </main>
 
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
