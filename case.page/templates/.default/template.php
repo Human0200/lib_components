@@ -1,37 +1,28 @@
 <?php
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
 /** @var array $arParams */
 /** @var array $arResult */
 /** @global CMain $APPLICATION */
-/** @global CUser $USER */
-/** @global CDatabase $DB */
-/** @var CBitrixComponentTemplate $this */
-/** @var string $templateName */
-/** @var string $templateFile */
-/** @var string $templateFolder */
-/** @var string $componentPath */
-/** @var CBitrixComponent $component */
 
 // Карта компонентов
 $componentMap = [
-    'topbar' => 'leadspace:topbar',
-    'whom' => 'leadspace:whom.cards',
-    'tools' => 'leadspace:bitrix24.tools',
-    'ready' => 'leadspace:ready.section',
-    'benefits' => 'leadspace:crm.benefits',
+    'intro' => 'leadspace:case.intro',
+    'details' => 'leadspace:case.details',
+    'targets' => 'leadspace:targets.list',
+    // 'roadmap' => 'leadspace:case.roadmap',
+    'stages' => 'leadspace:case.stages',
+    'results' => 'leadspace:results',
+    'features' => 'leadspace:features',
 ];
 
 // Карта include-файлов (что подключать после какого блока)
 $includeMap = [
-    'tools' => '/local/include/devices.php',
-    // Можно добавить другие:
-    // 'whom' => '/local/include/something.php',
-    // 'ready' => '/local/include/another.php',
+    // Пример: 'intro' => '/local/include/after-intro.php',
 ];
 
 // CSS класс для обертки
-$wrapperClass = 'landing-page';
+$wrapperClass = 'case-page';
 if (!empty($arResult['CSS_CLASS'])) {
     $wrapperClass .= ' ' . htmlspecialchars($arResult['CSS_CLASS']);
 }
@@ -41,21 +32,23 @@ if (!empty($arResult['CSS_CLASS'])) {
     <?php
     // Выводим блоки в заданном порядке
     foreach ($arResult['BLOCKS_ORDER'] as $blockKey):
-        // Получаем имя компонента
+        $blockKey = trim($blockKey);
+        
+        // Проверяем, есть ли компонент для этого блока
         if (!isset($componentMap[$blockKey])) {
             continue;
         }
         
         $componentName = $componentMap[$blockKey];
-        $template = $arResult['TEMPLATES'][$blockKey];
-        $params = $arResult[strtoupper($blockKey) . '_PARAMS'];
+        $template = $arResult['TEMPLATES'][$blockKey] ?? '.default';
+        $params = $arResult[strtoupper($blockKey) . '_PARAMS'] ?? [];
         
         // Подключаем компонент
         $APPLICATION->IncludeComponent(
             $componentName,
             $template,
             $params,
-            $component,
+            false,
             ['HIDE_ICONS' => 'Y']
         );
         

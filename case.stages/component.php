@@ -12,7 +12,7 @@ $arResult['STAGES'] = [];
 
 for($i = 1; $i <= 7; $i++) {
     $title = trim($arParams['STAGE_'.$i.'_TITLE']);
-    $text = html_entity_decode(trim($arParams['STAGE_'.$i.'_TEXT']));
+    $text = trim($arParams['STAGE_'.$i.'_TEXT']);
     $image = trim($arParams['STAGE_'.$i.'_IMAGE']);
     
     // Добавляем этап только если заполнено название

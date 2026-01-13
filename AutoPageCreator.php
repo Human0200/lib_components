@@ -475,7 +475,7 @@ $APPLICATION->IncludeComponent(
 		"WHOM_CARDS_TEMPLATE" => ".default",
 		"TOOLS_TEMPLATE" => ".default",
 		"IBLOCK_ID" => "3",
-		"ELEMENT_ID" => "7",
+		"ELEMENT_ID" => "{$elementId}",
 		"CACHE_TYPE" => "A",
 		"CACHE_TIME" => "3600",
 		"TOPBAR_IMAGE" => "",

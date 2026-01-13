@@ -1,7 +1,7 @@
 <?php
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
-// Подключаем модуль инфоблоков для формирования списка
+// Подключаем модуль инфоблоков
 if (!\Bitrix\Main\Loader::includeModule('iblock')) {
     return;
 }
@@ -13,745 +13,199 @@ while ($arIBlock = $dbIBlock->Fetch()) {
     $arIBlocks[$arIBlock["ID"]] = "[" . $arIBlock["ID"] . "] " . $arIBlock["NAME"];
 }
 
-// Получаем типы инфоблоков
-$arIBlockTypes = [];
-$dbIBlockType = \CIBlockType::GetList();
-while ($arIBlockType = $dbIBlockType->Fetch()) {
-    if ($ar = \CIBlockType::GetByIDLang($arIBlockType["ID"], LANG)) {
-        $arIBlockTypes[$arIBlockType["ID"]] = "[" . $arIBlockType["ID"] . "] " . $ar["NAME"];
-    }
-}
-
 $arComponentParameters = [
-    // === ОПИСАНИЕ ГРУПП (ВИЗУАЛЬНЫЕ СЕКЦИИ) ===
     "GROUPS" => [
-        "DATA_SOURCE" => [
-            "NAME" => "Источник данных (Инфоблок)",
-            "SORT" => 10
-        ],
-        "DISPLAY" => [
-            "NAME" => "Отображение блоков",
-            "SORT" => 20
-        ],
-        "TEMPLATES" => [
-            "NAME" => "Шаблоны компонентов",
-            "SORT" => 30
-        ],
-        "TOPBAR" => ["NAME" => "Topbar - Основное"],
-        "TOPBAR_PRICE" => ["NAME" => "Topbar - Цена"],
-        "TOPBAR_CARDS" => ["NAME" => "Topbar - Карточки"],
-        "TOPBAR_BUTTONS" => ["NAME" => "Topbar - Кнопки"],
-        "WHOM" => ["NAME" => "Whom Cards - Основное"],
-        "WHOM_CARD_1" => ["NAME" => "Whom Cards - Карточка 1"],
-        "WHOM_CARD_2" => ["NAME" => "Whom Cards - Карточка 2"],
-        "WHOM_CARD_3" => ["NAME" => "Whom Cards - Карточка 3"],
-        "TOOLS" => ["NAME" => "Tools - Основное"],
-        "TOOLS_1" => ["NAME" => "Tools - Инструмент 1"],
-        "TOOLS_2" => ["NAME" => "Tools - Инструмент 2"],
-        "READY" => ["NAME" => "Ready Section - Основное"],
-        "READY_SERVICES" => ["NAME" => "Ready Section - Сервисы"],
-        "READY_BUSINESS" => ["NAME" => "Ready Section - Бизнес-интеграции"],
-        "BENEFITS" => ["NAME" => "Benefits - Основное"],
-        "BENEFITS_CARD_1" => ["NAME" => "Benefits - Карточка 1"],
-        "BENEFITS_CARD_2" => ["NAME" => "Benefits - Карточка 2"],
-        "BENEFITS_CARD_3" => ["NAME" => "Benefits - Карточка 3"],
-        "BENEFITS_CARD_4" => ["NAME" => "Benefits - Карточка 4"],
-        "BENEFITS_CARD_5" => ["NAME" => "Benefits - Карточка 5"],
-        "BENEFITS_CARD_6" => ["NAME" => "Benefits - Карточка 6"],
+        "DATA_SOURCE" => ["NAME" => "Источник данных", "SORT" => 10],
+        "DISPLAY" => ["NAME" => "Отображение блоков", "SORT" => 20],
+        "TEMPLATES" => ["NAME" => "Шаблоны компонентов", "SORT" => 30],
+        "INTRO" => ["NAME" => "Case Intro - Основное"],
+        "DETAILS" => ["NAME" => "Case Details"],
+        "TARGETS" => ["NAME" => "Targets List"],
+        "ROADMAP" => ["NAME" => "Case Roadmap"],
+        "STAGES" => ["NAME" => "Case Stages"],
+        "RESULTS" => ["NAME" => "Results"],
+        "FEATURES" => ["NAME" => "Features"],
         "ADDITIONAL" => ["NAME" => "Дополнительно"],
     ],
 
     "PARAMETERS" => [
-        // === НАСТРОЙКИ ИСТОЧНИКА ДАННЫХ ===
+        // === ИСТОЧНИК ДАННЫХ ===
         "IBLOCK_ID" => [
             "PARENT" => "DATA_SOURCE",
-            "NAME" => "Основной инфоблок (для данных)",
+            "NAME" => "Инфоблок кейсов",
             "TYPE" => "LIST",
             "VALUES" => $arIBlocks,
-            "ADDITIONAL_VALUES" => "Y",
+            "DEFAULT" => "6",
             "REFRESH" => "Y",
         ],
         "ELEMENT_ID" => [
             "PARENT" => "DATA_SOURCE",
-            "NAME" => "ID элемента (для данных всех блоков)",
+            "NAME" => "ID элемента кейса",
             "TYPE" => "STRING",
             "DEFAULT" => "",
-            "DESCRIPTION" => "Используется для подстановки данных в topbar, whom, tools, ready"
         ],
 
-        // === НАСТРОЙКИ ОТОБРАЖЕНИЯ БЛОКОВ ===
+        // === ОТОБРАЖЕНИЕ ===
         "BLOCKS_ORDER" => [
             "PARENT" => "DISPLAY",
-            "NAME" => "Порядок блоков (через запятую: topbar,whom,tools,ready,benefits)",
+            "NAME" => "Порядок блоков",
             "TYPE" => "STRING",
-            "DEFAULT" => "topbar,whom,tools,ready,benefits",
-            "COLS" => 50,
+            "DEFAULT" => "intro,details,targets,roadmap,stages,results,features",
+            "COLS" => 60,
         ],
 
-        // === ШАБЛОНЫ КОМПОНЕНТОВ ===
-        "TOPBAR_TEMPLATE" => [
+        // === ШАБЛОНЫ ===
+        "INTRO_TEMPLATE" => [
             "PARENT" => "TEMPLATES",
-            "NAME" => "Шаблон для Topbar",
+            "NAME" => "Шаблон для Case Intro",
             "TYPE" => "STRING",
             "DEFAULT" => ".default",
         ],
-        "WHOM_CARDS_TEMPLATE" => [
+        "DETAILS_TEMPLATE" => [
             "PARENT" => "TEMPLATES",
-            "NAME" => "Шаблон для Whom Cards",
+            "NAME" => "Шаблон для Case Details",
             "TYPE" => "STRING",
             "DEFAULT" => ".default",
         ],
-        "TOOLS_TEMPLATE" => [
+        "TARGETS_TEMPLATE" => [
             "PARENT" => "TEMPLATES",
-            "NAME" => "Шаблон для Tools",
+            "NAME" => "Шаблон для Targets List",
             "TYPE" => "STRING",
             "DEFAULT" => ".default",
         ],
-        "READY_TEMPLATE" => [
+        "ROADMAP_TEMPLATE" => [
             "PARENT" => "TEMPLATES",
-            "NAME" => "Шаблон для Ready Section",
+            "NAME" => "Шаблон для Roadmap",
             "TYPE" => "STRING",
             "DEFAULT" => ".default",
         ],
-        "BENEFITS_TEMPLATE" => [
+        "STAGES_TEMPLATE" => [
             "PARENT" => "TEMPLATES",
-            "NAME" => "Шаблон для Benefits",
+            "NAME" => "Шаблон для Stages",
+            "TYPE" => "STRING",
+            "DEFAULT" => ".default",
+        ],
+        "RESULTS_TEMPLATE" => [
+            "PARENT" => "TEMPLATES",
+            "NAME" => "Шаблон для Results",
+            "TYPE" => "STRING",
+            "DEFAULT" => ".default",
+        ],
+        "FEATURES_TEMPLATE" => [
+            "PARENT" => "TEMPLATES",
+            "NAME" => "Шаблон для Features",
             "TYPE" => "STRING",
             "DEFAULT" => ".default",
         ],
 
-        // === ПАРАМЕТРЫ TOPBAR ===
-        "TOPBAR_IMAGE" => [
-            "PARENT" => "TOPBAR",
-            "NAME" => "Изображение",
+        // === INTRO ПАРАМЕТРЫ ===
+        "INTRO_TITLE_WORD" => [
+            "PARENT" => "INTRO",
+            "NAME" => "Слово заголовка (КЕЙС)",
             "TYPE" => "STRING",
-            "DEFAULT" => "/assets/images/topbar/01.webp",
+            "DEFAULT" => "КЕЙС",
         ],
-        "TOPBAR_TAGLINE" => [
-            "PARENT" => "TOPBAR",
-            "NAME" => "Слоган",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Банкротство физ.лиц это ответственная сфера",
-        ],
-        "TOPBAR_TITLE" => [
-            "PARENT" => "TOPBAR",
-            "NAME" => "Заголовок",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Банкротство физических лиц",
-        ],
-        "TOPBAR_SUBTITLE" => [
-            "PARENT" => "TOPBAR",
+        "INTRO_SUBTITLE" => [
+            "PARENT" => "INTRO",
             "NAME" => "Подзаголовок",
             "TYPE" => "STRING",
-            "DEFAULT" => "Полностью готовое решение для ниши",
+            "DEFAULT" => "",
         ],
-        "TOPBAR_PRICE_OLD" => [
-            "PARENT" => "TOPBAR_PRICE",
-            "NAME" => "Старая цена",
+        "INTRO_CARD_MARK" => [
+            "PARENT" => "INTRO",
+            "NAME" => "Метка карточки",
             "TYPE" => "STRING",
-            "DEFAULT" => "35 000 р",
+            "DEFAULT" => "Внедрение и настройка Битрикс24",
         ],
-        "TOPBAR_PRICE_NEW" => [
-            "PARENT" => "TOPBAR_PRICE",
-            "NAME" => "Новая цена",
-            "TYPE" => "STRING",
-            "DEFAULT" => "0",
-        ],
-        "TOPBAR_PRICE_CURRENCY" => [
-            "PARENT" => "TOPBAR_PRICE",
-            "NAME" => "Валюта",
-            "TYPE" => "STRING",
-            "DEFAULT" => "рублей",
-        ],
-        "TOPBAR_PRICE_NOTE" => [
-            "PARENT" => "TOPBAR_PRICE",
-            "NAME" => "Примечание к цене",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "*входит в счет приобретения годовой лицензии через нас",
-        ],
-
-        // Карточки Topbar
-        "TOPBAR_CARD_1_TEXT" => [
-            "PARENT" => "TOPBAR_CARDS",
-            "NAME" => "Карточка 1 - Текст",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "90% клиентов получили одобрение",
-        ],
-        "TOPBAR_CARD_1_NUMBER" => [
-            "PARENT" => "TOPBAR_CARDS",
-            "NAME" => "Карточка 1 - Число",
-            "TYPE" => "STRING",
-            "DEFAULT" => "20+",
-        ],
-        "TOPBAR_CARD_1_LABEL" => [
-            "PARENT" => "TOPBAR_CARDS",
-            "NAME" => "Карточка 1 - Подпись",
-            "TYPE" => "STRING",
-            "DEFAULT" => "установок",
-        ],
-        "TOPBAR_CARD_2_TEXT" => [
-            "PARENT" => "TOPBAR_CARDS",
-            "NAME" => "Карточка 2 - Текст",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "Быстрый старт работы",
-        ],
-        "TOPBAR_CARD_2_PREFIX" => [
-            "PARENT" => "TOPBAR_CARDS",
-            "NAME" => "Карточка 2 - Префикс",
-            "TYPE" => "STRING",
-            "DEFAULT" => "до",
-        ],
-        "TOPBAR_CARD_2_NUMBER" => [
-            "PARENT" => "TOPBAR_CARDS",
-            "NAME" => "Карточка 2 - Число",
-            "TYPE" => "STRING",
-            "DEFAULT" => "7",
-        ],
-        "TOPBAR_CARD_2_LABEL" => [
-            "PARENT" => "TOPBAR_CARDS",
-            "NAME" => "Карточка 2 - Подпись",
-            "TYPE" => "STRING",
-            "DEFAULT" => "дней",
-        ],
-        "TOPBAR_CARD_3_TEXT" => [
-            "PARENT" => "TOPBAR_CARDS",
-            "NAME" => "Карточка 3 - Текст",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "Профессиональная поддержка",
-        ],
-        "TOPBAR_CARD_3_PREFIX" => [
-            "PARENT" => "TOPBAR_CARDS",
-            "NAME" => "Карточка 3 - Префикс",
-            "TYPE" => "STRING",
-            "DEFAULT" => "от",
-        ],
-        "TOPBAR_CARD_3_NUMBER" => [
-            "PARENT" => "TOPBAR_CARDS",
-            "NAME" => "Карточка 3 - Число",
-            "TYPE" => "STRING",
-            "DEFAULT" => "150",
-        ],
-        "TOPBAR_CARD_3_LABEL" => [
-            "PARENT" => "TOPBAR_CARDS",
-            "NAME" => "Карточка 3 - Подпись",
-            "TYPE" => "STRING",
-            "DEFAULT" => "т.р",
-        ],
-
-        // Кнопки Topbar
-        "TOPBAR_BUTTON_1_TEXT" => [
-            "PARENT" => "TOPBAR_BUTTONS",
-            "NAME" => "Кнопка 1 - Текст",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Заказать внедрение",
-        ],
-        "TOPBAR_BUTTON_1_LINK" => [
-            "PARENT" => "TOPBAR_BUTTONS",
-            "NAME" => "Кнопка 1 - Ссылка",
-            "TYPE" => "STRING",
-            "DEFAULT" => "#",
-        ],
-        "TOPBAR_BUTTON_1_CURSOR" => [
-            "PARENT" => "TOPBAR_BUTTONS",
-            "NAME" => "Кнопка 1 - Текст курсора",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Перейти",
-        ],
-        "TOPBAR_BUTTON_2_TEXT" => [
-            "PARENT" => "TOPBAR_BUTTONS",
-            "NAME" => "Кнопка 2 - Текст",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Попробовать 7 дней бесплатно",
-        ],
-        "TOPBAR_BUTTON_2_LINK" => [
-            "PARENT" => "TOPBAR_BUTTONS",
-            "NAME" => "Кнопка 2 - Ссылка",
-            "TYPE" => "STRING",
-            "DEFAULT" => "#",
-        ],
-
-        // === ПАРАМЕТРЫ WHOM CARDS ===
-        "WHOM_MARK" => [
-            "PARENT" => "WHOM",
-            "NAME" => "Метка",
-            "TYPE" => "STRING",
-            "DEFAULT" => "для кого",
-        ],
-        "WHOM_TITLE" => [
-            "PARENT" => "WHOM",
-            "NAME" => "Заголовок",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Кому подходит данное решение?",
-        ],
-        "WHOM_BUTTON_TEXT" => [
-            "PARENT" => "WHOM",
+        "INTRO_BUTTON_TEXT" => [
+            "PARENT" => "INTRO",
             "NAME" => "Текст кнопки",
             "TYPE" => "STRING",
-            "DEFAULT" => "Попробовать 7 дней бесплатно",
+            "DEFAULT" => "заказать внедрение",
         ],
-        "WHOM_BUTTON_LINK" => [
-            "PARENT" => "WHOM",
+        "INTRO_BUTTON_LINK" => [
+            "PARENT" => "INTRO",
             "NAME" => "Ссылка кнопки",
             "TYPE" => "STRING",
-            "DEFAULT" => "#",
+            "DEFAULT" => "#modal-feedback",
         ],
 
-        // Карточки Whom
-        "WHOM_CARD_1_IMAGE" => [
-            "PARENT" => "WHOM_CARD_1",
-            "NAME" => "Изображение",
-            "TYPE" => "STRING",
-            "DEFAULT" => "/assets/images/whom/01.webp",
-        ],
-        "WHOM_CARD_1_TITLE" => [
-            "PARENT" => "WHOM_CARD_1",
-            "NAME" => "Заголовок",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Частным юристам",
-        ],
-        "WHOM_CARD_1_TEXT" => [
-            "PARENT" => "WHOM_CARD_1",
-            "NAME" => "Текст (формат: от|1|до|5|сотрудников)",
-            "TYPE" => "STRING",
-            "DEFAULT" => "от|1|до|5|сотрудников",
-        ],
-        "WHOM_CARD_1_BACK_SUBTITLE" => [
-            "PARENT" => "WHOM_CARD_1",
-            "NAME" => "Подзаголовок (обратная сторона)",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Численность от 1 до 5 сотрудников",
-        ],
-        "WHOM_CARD_1_BACK_TITLE" => [
-            "PARENT" => "WHOM_CARD_1",
-            "NAME" => "Заголовок (обратная сторона)",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Частным юристам",
-        ],
-        "WHOM_CARD_1_BACK_TEXT" => [
-            "PARENT" => "WHOM_CARD_1",
-            "NAME" => "Текст (обратная сторона)",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "Идеальное решение для частной практики",
-        ],
-
-        // Карточка 2
-        "WHOM_CARD_2_IMAGE" => [
-            "PARENT" => "WHOM_CARD_2",
-            "NAME" => "Изображение",
-            "TYPE" => "STRING",
-            "DEFAULT" => "/assets/images/whom/02.webp",
-        ],
-        "WHOM_CARD_2_TITLE" => [
-            "PARENT" => "WHOM_CARD_2",
-            "NAME" => "Заголовок",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Небольшим компаниям",
-        ],
-        "WHOM_CARD_2_TEXT" => [
-            "PARENT" => "WHOM_CARD_2",
-            "NAME" => "Текст (формат: от|3|до|50|сотрудников)",
-            "TYPE" => "STRING",
-            "DEFAULT" => "от|3|до|50|сотрудников",
-        ],
-        "WHOM_CARD_2_BACK_SUBTITLE" => [
-            "PARENT" => "WHOM_CARD_2",
-            "NAME" => "Подзаголовок (обратная сторона)",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Численность от 3 до 50 сотрудников",
-        ],
-        "WHOM_CARD_2_BACK_TITLE" => [
-            "PARENT" => "WHOM_CARD_2",
-            "NAME" => "Заголовок (обратная сторона)",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Небольшим компаниям",
-        ],
-        "WHOM_CARD_2_BACK_TEXT" => [
-            "PARENT" => "WHOM_CARD_2",
-            "NAME" => "Текст (обратная сторона)",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "Масштабируемое решение для роста бизнеса",
-        ],
-
-        // Карточка 3
-        "WHOM_CARD_3_IMAGE" => [
-            "PARENT" => "WHOM_CARD_3",
-            "NAME" => "Изображение",
-            "TYPE" => "STRING",
-            "DEFAULT" => "/assets/images/whom/03.webp",
-        ],
-        "WHOM_CARD_3_TITLE" => [
-            "PARENT" => "WHOM_CARD_3",
-            "NAME" => "Заголовок",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Юридическим компаниям",
-        ],
-        "WHOM_CARD_3_TEXT" => [
-            "PARENT" => "WHOM_CARD_3",
-            "NAME" => "Текст",
-            "TYPE" => "STRING",
-            "DEFAULT" => "от|10|до|1000|сотрудников",
-        ],
-        "WHOM_CARD_3_BACK_SUBTITLE" => [
-            "PARENT" => "WHOM_CARD_3",
-            "NAME" => "Подзаголовок (обратная сторона)",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Численность от 10 до 1000 сотрудников",
-        ],
-        "WHOM_CARD_3_BACK_TITLE" => [
-            "PARENT" => "WHOM_CARD_3",
-            "NAME" => "Заголовок (обратная сторона)",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Юридическим компаниям",
-        ],
-        "WHOM_CARD_3_BACK_TEXT" => [
-            "PARENT" => "WHOM_CARD_3",
-            "NAME" => "Текст (обратная сторона)",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "Корпоративное решение для больших команд",
-        ],
-
-        // === ПАРАМЕТРЫ TOOLS ===
-        "TOOLS_MARK_TEXT" => [
-            "PARENT" => "TOOLS",
+        // === DETAILS ПАРАМЕТРЫ ===
+        "DETAILS_MARK_TEXT" => [
+            "PARENT" => "DETAILS",
             "NAME" => "Текст метки",
             "TYPE" => "STRING",
-            "DEFAULT" => "что внутри",
+            "DEFAULT" => "компания",
         ],
-        "TOOLS_TAGLINE_ROW_1" => [
-            "PARENT" => "TOOLS",
-            "NAME" => "Тэглайн - строка 1",
+        "DETAILS_BLOCK_1_TITLE" => [
+            "PARENT" => "DETAILS",
+            "NAME" => "Блок 1 - Заголовок",
             "TYPE" => "STRING",
-            "DEFAULT" => "Вместе с CRM-решением вы получите",
+            "DEFAULT" => "О клиенте",
         ],
-        "TOOLS_TAGLINE_ROW_2" => [
-            "PARENT" => "TOOLS",
-            "NAME" => "Тэглайн - строка 2",
+        "DETAILS_BLOCK_2_TITLE" => [
+            "PARENT" => "DETAILS",
+            "NAME" => "Блок 2 - Заголовок",
             "TYPE" => "STRING",
-            "DEFAULT" => "полный набор инструментов Битрикс24",
+            "DEFAULT" => "задачи клиента",
         ],
-        "TOOLS_TITLE" => [
-            "PARENT" => "TOOLS",
+
+        // === TARGETS ПАРАМЕТРЫ ===
+        "TARGETS_TITLE" => [
+            "PARENT" => "TARGETS",
             "NAME" => "Заголовок",
             "TYPE" => "STRING",
-            "DEFAULT" => "Что внутри готового решения?",
+            "DEFAULT" => "Цели проекта",
         ],
 
-        // Инструмент 1
-        "TOOLS_TOOL_1_NAME" => [
-            "PARENT" => "TOOLS_1",
-            "NAME" => "Название",
+        // === ROADMAP ПАРАМЕТРЫ ===
+        "ROADMAP_MARK_TEXT" => [
+            "PARENT" => "ROADMAP",
+            "NAME" => "Текст метки",
             "TYPE" => "STRING",
-            "DEFAULT" => "ЧАТ И ВИДЕОЗВОНКИ",
+            "DEFAULT" => "Сроки и этапы работы над проектом",
         ],
-        "TOOLS_TOOL_1_DESC_1" => [
-            "PARENT" => "TOOLS_1",
-            "NAME" => "Описание 1",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_1_DESC_2" => [
-            "PARENT" => "TOOLS_1",
-            "NAME" => "Описание 2",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_1_DESC_3" => [
-            "PARENT" => "TOOLS_1",
-            "NAME" => "Описание 3",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_1_DESC_4" => [
-            "PARENT" => "TOOLS_1",
-            "NAME" => "Описание 4",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_1_DESC_5" => [
-            "PARENT" => "TOOLS_1",
-            "NAME" => "Описание 5",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_1_IMAGE_1" => [
-            "PARENT" => "TOOLS_1",
-            "NAME" => "Картинка 1",
-            "TYPE" => "STRING",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_1_IMAGE_2" => [
-            "PARENT" => "TOOLS_1",
-            "NAME" => "Картинка 2",
-            "TYPE" => "STRING",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_1_IMAGE_3" => [
-            "PARENT" => "TOOLS_1",
-            "NAME" => "Картинка 3",
-            "TYPE" => "STRING",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_1_IMAGE_4" => [
-            "PARENT" => "TOOLS_1",
-            "NAME" => "Картинка 4",
-            "TYPE" => "STRING",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_1_IMAGE_5" => [
-            "PARENT" => "TOOLS_1",
-            "NAME" => "Картинка 5",
-            "TYPE" => "STRING",
-            "DEFAULT" => "",
-        ],
-
-        // Инструмент 2
-        "TOOLS_TOOL_2_NAME" => [
-            "PARENT" => "TOOLS_2",
-            "NAME" => "Название",
-            "TYPE" => "STRING",
-            "DEFAULT" => "ЗАДАЧИ И ПРОЕКТЫ",
-        ],
-        "TOOLS_TOOL_2_DESC_1" => [
-            "PARENT" => "TOOLS_2",
-            "NAME" => "Описание 1",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_2_DESC_2" => [
-            "PARENT" => "TOOLS_2",
-            "NAME" => "Описание 2",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_2_DESC_3" => [
-            "PARENT" => "TOOLS_2",
-            "NAME" => "Описание 3",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_2_DESC_4" => [
-            "PARENT" => "TOOLS_2",
-            "NAME" => "Описание 4",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_2_DESC_5" => [
-            "PARENT" => "TOOLS_2",
-            "NAME" => "Описание 5",
-            "TYPE" => "TEXT",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_2_IMAGE_1" => [
-            "PARENT" => "TOOLS_2",
-            "NAME" => "Картинка 1",
-            "TYPE" => "STRING",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_2_IMAGE_2" => [
-            "PARENT" => "TOOLS_2",
-            "NAME" => "Картинка 2",
-            "TYPE" => "STRING",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_2_IMAGE_3" => [
-            "PARENT" => "TOOLS_2",
-            "NAME" => "Картинка 3",
-            "TYPE" => "STRING",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_2_IMAGE_4" => [
-            "PARENT" => "TOOLS_2",
-            "NAME" => "Картинка 4",
-            "TYPE" => "STRING",
-            "DEFAULT" => "",
-        ],
-        "TOOLS_TOOL_2_IMAGE_5" => [
-            "PARENT" => "TOOLS_2",
-            "NAME" => "Картинка 5",
-            "TYPE" => "STRING",
-            "DEFAULT" => "",
-        ],
-
-        // === ПАРАМЕТРЫ READY SECTION ===
-        "READY_IBLOCK_ID" => [
-            "PARENT" => "READY",
-            "NAME" => "Инфоблок бизнес-интеграций",
-            "TYPE" => "LIST",
-            "VALUES" => $arIBlocks,
-            "ADDITIONAL_VALUES" => "Y",
-            "DEFAULT" => "",
-            "DESCRIPTION" => "Если не указан, используется основной инфоблок"
-        ],
-        "READY_IBLOCK_CODE" => [
-            "PARENT" => "READY",
-            "NAME" => "Код инфоблока бизнес-интеграций",
-            "TYPE" => "STRING",
-            "DEFAULT" => "business_integrations",
-            "DESCRIPTION" => "Используется если не указан ID инфоблока"
-        ],
-        "READY_IBLOCK_TYPE" => [
-            "PARENT" => "READY",
-            "NAME" => "Тип инфоблока",
-            "TYPE" => "LIST",
-            "VALUES" => $arIBlockTypes,
-            "DEFAULT" => "services",
-        ],
-        "READY_SHOW_SERVICES" => [
-            "PARENT" => "READY",
-            "NAME" => "Показывать блок сервисов",
-            "TYPE" => "CHECKBOX",
-            "DEFAULT" => "Y",
-        ],
-        "READY_SHOW_BUSINESS" => [
-            "PARENT" => "READY",
-            "NAME" => "Показывать блок бизнес-интеграций",
-            "TYPE" => "CHECKBOX",
-            "DEFAULT" => "Y",
-        ],
-        "READY_ITEMS_COUNT" => [
-            "PARENT" => "READY",
-            "NAME" => "Количество элементов для вывода",
-            "TYPE" => "STRING",
-            "DEFAULT" => "6",
-        ],
-        "READY_SORT_BY" => [
-            "PARENT" => "READY",
-            "NAME" => "Поле сортировки",
-            "TYPE" => "LIST",
-            "VALUES" => [
-                "SORT" => "Сортировка",
-                "ID" => "ID",
-                "NAME" => "Название",
-                "ACTIVE_FROM" => "Дата начала активности",
-                "DATE_CREATE" => "Дата создания",
-            ],
-            "DEFAULT" => "SORT",
-        ],
-        "READY_SORT_ORDER" => [
-            "PARENT" => "READY",
-            "NAME" => "Порядок сортировки",
-            "TYPE" => "LIST",
-            "VALUES" => [
-                "ASC" => "По возрастанию",
-                "DESC" => "По убыванию",
-            ],
-            "DEFAULT" => "ASC",
-        ],
-        "READY_SERVICES_TITLE" => [
-            "PARENT" => "READY_SERVICES",
-            "NAME" => "Заголовок сервисов",
-            "TYPE" => "STRING",
-            "DEFAULT" => "100+ готовых интеграций и сервисов!",
-        ],
-        "READY_BUSINESS_TITLE" => [
-            "PARENT" => "READY_BUSINESS",
-            "NAME" => "Заголовок бизнес-интеграций",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Интеграции с нишевыми сервисами для бизнеса",
-        ],
-
-        // === ПАРАМЕТРЫ BENEFITS ===
-        "BENEFITS_MARK" => [
-            "PARENT" => "BENEFITS",
-            "NAME" => "Метка (mark)",
-            "TYPE" => "STRING",
-            "DEFAULT" => "СRM-система",
-        ],
-        "BENEFITS_TAGLINE_ROW_1" => [
-            "PARENT" => "BENEFITS",
-            "NAME" => "Слоган - строка 1",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Ваша CRM уже готова:",
-        ],
-        "BENEFITS_TAGLINE_ROW_2" => [
-            "PARENT" => "BENEFITS",
-            "NAME" => "Слоган - строка 2",
-            "TYPE" => "STRING",
-            "DEFAULT" => "разработана с учетом всех особенностей ниши",
-        ],
-        "BENEFITS_TITLE" => [
-            "PARENT" => "BENEFITS",
+        "ROADMAP_TITLE" => [
+            "PARENT" => "ROADMAP",
             "NAME" => "Заголовок",
             "TYPE" => "STRING",
-            "DEFAULT" => "СRM-система помогает:",
-        ],
-        "BENEFITS_CARD_1_TEXT" => [
-            "PARENT" => "BENEFITS_CARD_1",
-            "NAME" => "Карточка 1 - Текст",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Автоматизировать коммуникации с клиентами",
-        ],
-        "BENEFITS_CARD_1_ICON" => [
-            "PARENT" => "BENEFITS_CARD_1",
-            "NAME" => "Карточка 1 - Путь к SVG иконке",
-            "TYPE" => "STRING",
-            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Business Conversation.svg',
-        ],
-        "BENEFITS_CARD_2_TEXT" => [
-            "PARENT" => "BENEFITS_CARD_2",
-            "NAME" => "Карточка 2 - Текст",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Повышать эффективность команды",
-        ],
-        "BENEFITS_CARD_2_ICON" => [
-            "PARENT" => "BENEFITS_CARD_2",
-            "NAME" => "Карточка 2 - Путь к SVG иконке",
-            "TYPE" => "STRING",
-            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/SvgjsG1681.svg',
-        ],
-        "BENEFITS_CARD_3_TEXT" => [
-            "PARENT" => "BENEFITS_CARD_3",
-            "NAME" => "Карточка 3 - Текст",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Визуализировать данные и генерировать отчёты",
-        ],
-        "BENEFITS_CARD_3_ICON" => [
-            "PARENT" => "BENEFITS_CARD_3",
-            "NAME" => "Карточка 3 - Путь к SVG иконке",
-            "TYPE" => "STRING",
-            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Duplicate Copy.svg',
-        ],
-        "BENEFITS_CARD_4_TEXT" => [
-            "PARENT" => "BENEFITS_CARD_4",
-            "NAME" => "Карточка 4 - Текст",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Выстроить систему работы с клиентской базой",
-        ],
-        "BENEFITS_CARD_4_ICON" => [
-            "PARENT" => "BENEFITS_CARD_4",
-            "NAME" => "Карточка 4 - Путь к SVG иконке",
-            "TYPE" => "STRING",
-            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Business Hierarchy.svg',
-        ],
-        "BENEFITS_CARD_5_TEXT" => [
-            "PARENT" => "BENEFITS_CARD_5",
-            "NAME" => "Карточка 5 - Текст",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Управлять задачами и сроками",
-        ],
-        "BENEFITS_CARD_5_ICON" => [
-            "PARENT" => "BENEFITS_CARD_5",
-            "NAME" => "Карточка 5 - Путь к SVG иконке",
-            "TYPE" => "STRING",
-            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Group 19808.svg',
-        ],
-        "BENEFITS_CARD_6_TEXT" => [
-            "PARENT" => "BENEFITS_CARD_6",
-            "NAME" => "Карточка 6 - Текст",
-            "TYPE" => "STRING",
-            "DEFAULT" => "Анализировать эффективность работы",
-        ],
-        "BENEFITS_CARD_6_ICON" => [
-            "PARENT" => "BENEFITS_CARD_6",
-            "NAME" => "Карточка 6 - Путь к SVG иконке",
-            "TYPE" => "STRING",
-            "DEFAULT" => '/local/templates/leadspace/assets/images/icons/Business Growth.svg',
+            "DEFAULT" => "Дорожная карта",
         ],
 
-        // === ДОПОЛНИТЕЛЬНЫЕ НАСТРОЙКИ ===
+        // === STAGES ПАРАМЕТРЫ ===
+        "STAGES_TITLE" => [
+            "PARENT" => "STAGES",
+            "NAME" => "Заголовок",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Этапы внедрения",
+        ],
+
+        // === RESULTS ПАРАМЕТРЫ ===
+        "RESULTS_TITLE" => [
+            "PARENT" => "RESULTS",
+            "NAME" => "Заголовок",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Результаты и выводы",
+        ],
+        "RESULTS_MARK" => [
+            "PARENT" => "RESULTS",
+            "NAME" => "Метка",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Статистика",
+        ],
+
+        // === FEATURES ПАРАМЕТРЫ ===
+        "FEATURES_TITLE" => [
+            "PARENT" => "FEATURES",
+            "NAME" => "Заголовок",
+            "TYPE" => "STRING",
+            "DEFAULT" => "Особенности проекта",
+        ],
+
+        // === ДОПОЛНИТЕЛЬНО ===
         "CSS_CLASS" => [
             "PARENT" => "ADDITIONAL",
-            "NAME" => "CSS класс для обертки",
+            "NAME" => "CSS класс обертки",
             "TYPE" => "STRING",
             "DEFAULT" => "",
         ],
