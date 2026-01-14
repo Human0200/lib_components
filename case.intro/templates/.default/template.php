@@ -50,7 +50,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 </tr>
                 <tr>
                     <th>Лицензия</th>
-                    <td><?= $arResult['LICENSE'] ?></td>
+                    <td><?= htmlspecialchars_decode($arResult['LICENSE']) ?></td>
                 </tr>
             </table>
         </div>

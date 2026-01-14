@@ -20,7 +20,7 @@ for($i = 1; $i <= 7; $i++) {
         $arResult['STAGES'][] = [
             'NUMBER' => str_pad($i, 2, '0', STR_PAD_LEFT),
             'TITLE' => $title,
-            'TEXT' => $text,
+            'TEXT' => html_entity_decode($text), // Декодируем HTML-сущности
             'IMAGE' => $image,
         ];
     }

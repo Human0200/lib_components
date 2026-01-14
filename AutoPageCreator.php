@@ -125,7 +125,12 @@ class AutoPageCreator
 
         // Проверяем, нужно ли создавать/обновлять файл
         if (file_exists($indexFile)) {
-            return; // Файл уже существует, не перезаписываем НИКОГДА
+            if (!$isUpdate) {
+                return; // Файл уже существует, и это не обновление
+            }else{
+                // Файл существует, продолжаем для обновления
+                copy($indexFile, $indexFile . '.bak'); // Создаем резервную копию
+            }
         }
 
         // Генерируем содержимое страницы
@@ -194,14 +199,14 @@ class AutoPageCreator
     /**
      * Генерация страницы кейса
      */
-    private static function GenerateCasePage($title, $elementId)
-    {
-        $content = <<<'PHP'
+private static function GenerateCasePage($title, $elementId)
+{
+    $content = <<<PHP
 <?
 define('HEADER_TYPE', 'cases');
-require($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("TITLE_PLACEHOLDER");
+require(\$_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
+require(\$_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+\$APPLICATION->SetTitle("$title");
 ?>
 <div class="cursor"></div>
 <div class="glass"></div>
@@ -209,216 +214,70 @@ $APPLICATION->SetTitle("TITLE_PLACEHOLDER");
 
 <main class="main">
 
-<?$APPLICATION->IncludeComponent(
-    "leadspace:case.intro", 
-    ".default", 
-    [
-        "TITLE_WORD" => "КЕЙС",
-        "SUBTITLE" => "TITLE_PLACEHOLDER",
-        "CARD_MARK" => "Внедрение и настройка Битрикс24",
-        "CARD_IMAGE" => "/local/templates/leadspace/assets/images/intro/01.webp",
-        "TAG_1" => "#воронка продаж",
-        "TAG_2" => "#телефония",
-        "TAG_3" => "#интеграция",
-        "TAG_4" => "",
-        "TAG_5" => "",
-        "BUTTON_TEXT" => "заказать внедрение",
-        "BUTTON_LINK" => "#modal-feedback",
-        "WORKPLACES" => "20",
-        "PROJECT_DAYS" => "7",
-        "LICENSE" => "Коробочная версия Битрикс24",
-        "CACHE_TIME" => "3600",
-        "CACHE_TYPE" => "A",
-    ],
-    false
-);?>
-
-<?$APPLICATION->IncludeComponent(
-    "leadspace:case.details", 
-    ".default", 
-    [
-        "BG_IMAGE" => "/local/templates/leadspace/assets/cases/details-bg.webp",
-        "MARK_TEXT" => "компания",
-        "BLOCK_1_TITLE" => "О клиенте",
-        "BLOCK_1_TEXT" => "<p>Описание клиента...</p>",
-        "BLOCK_1_CLIENT_NAME" => "Название компании",
-        "BLOCK_1_CLIENT_LINK" => "#modal-feedback",
-        "BLOCK_2_TITLE" => "задачи клиента",
-        "BLOCK_2_TEXT" => "<p>Описание задач...</p>",
-        "CACHE_TIME" => "3600",
-        "CACHE_TYPE" => "A"
-    ],
-    false
-);?>
-
-<?php
-$APPLICATION->IncludeComponent(
-    "leadspace:targets.list", 
-    ".default", 
-    array(
-        "TITLE" => "Цели проекта",
-        "TARGET_1_TITLE" => "Заголовок",
-        "TARGET_1_TEXT" => "Описание.",
-        "TARGET_2_TITLE" => "Заголовок", 
-        "TARGET_2_TEXT" => "Описание",
-        "TARGET_3_TITLE" => "Заголовок",
-        "TARGET_3_TEXT" => "Описание.",
-        "CACHE_TIME" => 3600
-    )
-);
-?>
-
-<?$APPLICATION->IncludeComponent(
-    "leadspace:case.roadmap",
+<?\$APPLICATION->IncludeComponent(
+    "leadspace:case.page",
     ".default",
-    [
-        "MARK_TEXT" => "Сроки и этапы работы над проектом",
-        "TITLE" => "Дорожная карта",
-        "TABLE_HEADER_YEAR" => "2024 год",
-        "STEP_1_NAME" => "Предпроектная аналитика",
-        "STEP_1_TETRIS" => "Y",
-        "STEP_1_DURATION" => "5 дней",
-        "STEP_2_NAME" => "Формирование ТЗ",
-        "STEP_2_TETRIS" => "N",
-        "STEP_2_DURATION" => "3 дня",
-        "STEP_3_NAME" => "Настройка системы",
-        "STEP_3_TETRIS" => "N",
-        "STEP_3_DURATION" => "14 дней",
-        "STEP_4_NAME" => "Обучение",
-        "STEP_4_TETRIS" => "N",
-        "STEP_4_DURATION" => "7 дней",
-        "STEP_5_NAME" => "Сопровождение",
-        "STEP_5_TETRIS" => "N",
-        "STEP_5_DURATION" => "н.в",
-        "CACHE_TIME" => 3600,
-    ]
-);?>
-
-<?$APPLICATION->IncludeComponent(
-    "leadspace:case.stages",
-    ".default",
-    [
-        "TITLE" => "Этапы внедрения",
-        "STAGE_1_TITLE" => "предпроектное иследование",
-        "STAGE_1_TEXT" => "<p>Описание этапа...</p>",
-        "STAGE_1_IMAGE" => "/upload/stages/01.webp",
-        "STAGE_2_TITLE" => "Внедрение\nБитрикс24",
-        "STAGE_2_TEXT" => "<p>Описание этапа...</p>",
-        "STAGE_2_IMAGE" => "/upload/stages/02.webp",
-        "STAGE_3_TITLE" => "Бизнес-процессы",
-        "STAGE_3_TEXT" => "<p>Описание этапа...</p>",
-        "STAGE_3_IMAGE" => "/upload/stages/03.webp",
-        "CACHE_TIME" => 3600,
-    ]
-);?>
-
-<?$APPLICATION->IncludeComponent(
-	"leadspace:results", 
-	".default", 
-	[
-		"TITLE" => "Результаты и выводы",
-		"MARK" => "Статистика",
-		"CARD_1_IMAGE" => "/local/templates/leadspace/assets/images/results/green.webp",
-		"CARD_1_TITLE" => "Рост показателей",
-		"CARD_1_ITEM_1_PCT" => "%",
-		"CARD_1_ITEM_1_TEXT" => "прозрачности в контроле охраны труда",
-		"COMPONENT_TEMPLATE" => ".default",
-		"CACHE_TYPE" => "A",
-		"CACHE_TIME" => "3600",
-		"CARD_1_ITEM_1_NUMBER" => "99",
-		"CARD_1_ITEM_1_CAPTION" => "",
-		"CARD_1_ITEM_2_NUMBER" => "70",
-		"CARD_1_ITEM_2_PCT" => "%",
-		"CARD_1_ITEM_2_TEXT" => "времени на ведение журналов и планирование инструктажей",
-		"CARD_1_ITEM_2_CAPTION" => "",
-		"CARD_1_ITEM_3_NUMBER" => "60",
-		"CARD_1_ITEM_3_PCT" => "%",
-		"CARD_1_ITEM_3_TEXT" => "скорости реакции на просрочки и истечение сроков документов",
-		"CARD_1_ITEM_3_CAPTION" => "",
-		"CARD_2_IMAGE" => "/local/templates/leadspace/assets/images/results/red.webp",
-		"CARD_2_TITLE" => "Снижение издержек",
-		"CARD_2_ITEM_1_NUMBER" => "50",
-		"CARD_2_ITEM_1_PCT" => "%",
-		"CARD_2_ITEM_1_TEXT" => "ошибок при работе с документами и графиками",
-		"CARD_2_ITEM_1_CAPTION" => "",
-		"CARD_2_ITEM_2_NUMBER" => "40",
-		"CARD_2_ITEM_2_PCT" => "%",
-		"CARD_2_ITEM_2_TEXT" => "нагрузки на специалиста по ОТ и HR-отдел",
-		"CARD_2_ITEM_2_CAPTION" => "",
-		"CARD_2_ITEM_3_NUMBER" => "30",
-		"CARD_2_ITEM_3_PCT" => "%",
-		"CARD_2_ITEM_3_TEXT" => "бумажного документооборота за счёт перехода в цифровую среду",
-		"CARD_2_ITEM_3_CAPTION" => ""
-	],
-	false
-);?>
-
-<?php
-$APPLICATION->IncludeComponent(
-	"leadspace:features", 
-	".default", 
-	[
-		"TITLE" => "Особенности проекта",
-		"TAGLINE_ROW1" => "Ключевая особенность: создание полноценного цифрового рабочего места специалиста по охране труда.",
-		"TAGLINE_ROW2" => "Дополнительные особенности:",
-		"FEATURES_LIST" => "Интеграция учёта СИЗ, инструктажей, медосмотров и аттестаций в одной CRM.
-Автоматические напоминания и задачи на всех стадиях процессов.
-Возможность гибкой настройки под структуру и специфику предприятия",
-		"COMPONENT_TEMPLATE" => ".default",
-		"CACHE_TYPE" => "A",
-		"CACHE_TIME" => "3600"
-	],
-	false
-);
-?>
-
-<?$APPLICATION->IncludeComponent(
-    "leadspace:solutions.list", 
-    "other", 
     [
         "IBLOCK_ID" => "6",
-        "CACHE_TIME" => "3600",
-        "TITLE" => "другие кейсы",
-        "CACHE_TYPE" => "A"
+        "ELEMENT_ID" => "$elementId",  
+        "BLOCKS_ORDER" => "intro,details,targets,roadmap,stages,results,features",
+        "CACHE_TYPE" => "A",
+        "CACHE_TIME" => "3600"
     ],
     false
+);?>
+
+
+<?\$APPLICATION->IncludeComponent(
+	"leadspace:solutions.list", 
+	"other", 
+	[
+		"IBLOCK_ID" => "6",
+		"CACHE_TIME" => "3600",
+		"COMPONENT_TEMPLATE" => "other",
+		"TITLE" => "другие кейсы",
+		"CACHE_TYPE" => "A"
+	],
+	false
 );?>
 
 <figure class="group-d3"></figure>
+<? //конец
+\$APPLICATION->IncludeComponent(
+    "bitrix:form.result.new",
+    "feedback",
+    [
+        "WEB_FORM_ID" => "1",
+        "IGNORE_CUSTOM_TEMPLATE" => "N",
+        "USE_EXTENDED_ERRORS" => "Y",
+        "SEF_MODE" => "N",
+        "CACHE_TYPE" => "A",
+        "CACHE_TIME" => "3600",
+        
+        
+        "LIST_URL" => "#form-success",           // Пустая строка = не редиректить
+        "EDIT_URL" => "",           // Пустая строка = не редиректить  
+        "SUCCESS_URL" => "",        // Пустая строка = остаться на странице
+        
 
-<?$APPLICATION->IncludeComponent(
-	"bitrix:form.result.new", 
-	"feedback", 
-	[
-		"WEB_FORM_ID" => "1",
-		"IGNORE_CUSTOM_TEMPLATE" => "N",
-		"USE_EXTENDED_ERRORS" => "Y",
-		"SEF_MODE" => "N",
-		"CACHE_TYPE" => "A",
-		"CACHE_TIME" => "3600",
-		"LIST_URL" => "https://3d-group.space/thank.php",
-		"EDIT_URL" => "",
-		"SUCCESS_URL" => "#form-success",
-		"SECTION_TITLE" => "Ответим на всё, что вас интересует",
-		"SECTION_TEXT" => "Вы знаете цели, мы знаем инструмент. \n Создадим оптимальное решение вместе.",
-		"BUTTON_TEXT" => "отправить",
-		"PRIVACY_URL" => "/privacy/",
-		"PERSONAL_DATA_URL" => "/personal-data/",
-		"CHAIN_ITEM_TEXT" => "",
-		"CHAIN_ITEM_LINK" => "",
-		"COMPONENT_TEMPLATE" => "feedback",
-		"VARIABLE_ALIASES" => [
-			"WEB_FORM_ID" => "1",
-			"RESULT_ID" => "1",
-		]
-	],
-	false
+        "SECTION_TITLE" => "Ответим на всё, что вас интересует",
+        "SECTION_TEXT" => "Вы знаете цели, мы знаем инструмент. \n Создадим оптимальное решение вместе.",
+        "BUTTON_TEXT" => "отправить",
+        "PRIVACY_URL" => "/privacy/",
+        "PERSONAL_DATA_URL" => "/personal-data/",
+        
+        "CHAIN_ITEM_TEXT" => "",
+        "CHAIN_ITEM_LINK" => "",
+        "VARIABLE_ALIASES" => [
+            "WEB_FORM_ID" => "WEB_FORM_ID",
+            "RESULT_ID" => "RESULT_ID",
+        ]
+    ]
 );?>
-
-<?$APPLICATION->IncludeComponent(
+<?\$APPLICATION->IncludeComponent(
     "bitrix:form.result.new",
     "modal",
-    [
+    array(
         "WEB_FORM_ID" => "2", 
         "IGNORE_CUSTOM_TEMPLATE" => "N",
         "USE_EXTENDED_ERRORS" => "Y",
@@ -433,30 +292,30 @@ $APPLICATION->IncludeComponent(
         "PRIVACY_URL" => "/privacy/",
         "PERSONAL_DATA_URL" => "/personal-data/",
         "BUTTON_TEXT" => "отправить",
-    ],
+    ),
     false
 );?>
 
 </main>
 
-<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
-<?require($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/epilog_after.php');?>
+<?require(\$_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+<?require(\$_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/epilog_after.php');?>
 PHP;
 
-        return str_replace('TITLE_PLACEHOLDER', $title, $content);
-    }
+    return $content;
+}
 
     /**
      * Генерация страницы решения
      */
-    private static function GenerateSolutionPage($title, $elementId)
-    {
-        $content = <<<'PHP'
+private static function GenerateSolutionPage($title, $elementId)
+{
+    $content = <<<PHP
 <?
 define('HEADER_TYPE', 'solutions');
-require($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("TITLE_PLACEHOLDER");
+require(\$_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
+require(\$_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+\$APPLICATION->SetTitle("$title");
 ?>
 <div class="cursor"></div>
 <div class="glass"></div>
@@ -465,7 +324,7 @@ $APPLICATION->SetTitle("TITLE_PLACEHOLDER");
 <main class="main">
 
 <?php
-$APPLICATION->IncludeComponent(
+\$APPLICATION->IncludeComponent(
 	"leadspace:solution.page", 
 	".default", 
 	[
@@ -475,7 +334,7 @@ $APPLICATION->IncludeComponent(
 		"WHOM_CARDS_TEMPLATE" => ".default",
 		"TOOLS_TEMPLATE" => ".default",
 		"IBLOCK_ID" => "3",
-		"ELEMENT_ID" => "{$elementId}",
+		"ELEMENT_ID" => "$elementId",
 		"CACHE_TYPE" => "A",
 		"CACHE_TIME" => "3600",
 		"TOPBAR_IMAGE" => "",
@@ -567,7 +426,7 @@ $APPLICATION->IncludeComponent(
 	false
 );
 ?>
-<?$APPLICATION->IncludeComponent(
+<?\$APPLICATION->IncludeComponent(
 	"leadspace:individual.steps", 
 	"other", 
 	[
@@ -588,7 +447,7 @@ $APPLICATION->IncludeComponent(
 );?>
 
 <?php
-$APPLICATION->IncludeComponent(
+\$APPLICATION->IncludeComponent(
 	"leadspace:tariffs.slider", 
 	".default", 
 	[
@@ -602,7 +461,7 @@ $APPLICATION->IncludeComponent(
 );
 ?>
 
-<?$APPLICATION->IncludeComponent(
+<?\$APPLICATION->IncludeComponent(
 	"leadspace:bitrix24.licenses", 
 	".default", 
 	[
@@ -644,7 +503,7 @@ $APPLICATION->IncludeComponent(
 
 
 <?php
-$APPLICATION->IncludeComponent(
+\$APPLICATION->IncludeComponent(
     "leadspace:promo.marquee",
     ".default",
     [
@@ -663,7 +522,7 @@ $APPLICATION->IncludeComponent(
 ?>
 
 <?php
-$APPLICATION->IncludeComponent(
+\$APPLICATION->IncludeComponent(
 	"leadspace:reviews.slider", 
 	".default", 
 	[
@@ -679,7 +538,7 @@ $APPLICATION->IncludeComponent(
 );
 ?>
 
-<?$APPLICATION->IncludeComponent(
+<?\$APPLICATION->IncludeComponent(
 	"leadspace:solutions.list", 
 	"other", 
 	[
@@ -695,7 +554,7 @@ $APPLICATION->IncludeComponent(
 );?>
 
 <figure class="group-d3"></figure>
-<?$APPLICATION->IncludeComponent(
+<?\$APPLICATION->IncludeComponent(
 	"bitrix:form.result.new", 
 	"feedback", 
 	[
@@ -724,7 +583,7 @@ $APPLICATION->IncludeComponent(
 	false
 );?>
 
-<?$APPLICATION->IncludeComponent(
+<?\$APPLICATION->IncludeComponent(
 	"bitrix:form.result.new", 
 	"modal", 
 	[
@@ -752,12 +611,12 @@ $APPLICATION->IncludeComponent(
 );?>
 </main>
 
-<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
-<?require($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/epilog_after.php');?>
+<?require(\$_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+<?require(\$_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/epilog_after.php');?>
 PHP;
 
-        return str_replace('TITLE_PLACEHOLDER', $title, $content);
-    }
+    return $content;
+}
 
     /**
      * Генерация простой страницы по умолчанию (для других инфоблоков)

@@ -116,9 +116,9 @@ class CasePageComponent extends CBitrixComponent
      */
     protected function mapIblockDataToParams($data)
     {
-        echo '<pre>';
-        print_r($data);
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($data);
+        // echo '</pre>';
         if (empty($data)) {
             return;
         }
@@ -187,20 +187,35 @@ class CasePageComponent extends CBitrixComponent
         }
 
         // === ROADMAP маппинг ===
-        if (!empty($props['TABLE_HEADER_YEAR']['VALUE'])) {
-            $this->arResult['ROADMAP_PARAMS']['TABLE_HEADER_YEAR'] = $props['TABLE_HEADER_YEAR']['VALUE'];
-        }
-        for ($i = 1; $i <= 7; $i++) {
-            if (!empty($props['STEP_' . $i . '_NAME']['VALUE'])) {
-                $this->arResult['ROADMAP_PARAMS']['STEP_' . $i . '_NAME'] = $props['STEP_' . $i . '_NAME']['VALUE'];
-            }
-            if (!empty($props['STEP_' . $i . '_TETRIS']['VALUE'])) {
-                $this->arResult['ROADMAP_PARAMS']['STEP_' . $i . '_TETRIS'] = $props['STEP_' . $i . '_TETRIS']['VALUE'];
-            }
-            if (!empty($props['STEP_' . $i . '_DURATION']['VALUE'])) {
-                $this->arResult['ROADMAP_PARAMS']['STEP_' . $i . '_DURATION'] = $props['STEP_' . $i . '_DURATION']['VALUE'];
-            }
-        }
+        // if (!empty($props['TABLE_HEADER_YEAR']['VALUE'])) {
+        //     $this->arResult['ROADMAP_PARAMS']['TABLE_HEADER_YEAR'] = $props['TABLE_HEADER_YEAR']['VALUE'];
+        // }
+        $this->arResult['ROADMAP_PARAMS']['TABLE_HEADER_YEAR'] = "2024 год";
+        $this->arResult['ROADMAP_PARAMS']['MARK_TEXT'] = "Сроки и этапы работы над проектом";
+        $this->arResult['ROADMAP_PARAMS']['TITLE'] = "Дорожная карта";
+
+        $this->arResult['ROADMAP_PARAMS']['STEP_' . 1 . '_NAME'] = "Предпроектная аналитика и выбор лицензии Битрикс24";
+        $this->arResult['ROADMAP_PARAMS']['STEP_' . 2 . '_NAME'] = "Формирование технического задания";
+        $this->arResult['ROADMAP_PARAMS']['STEP_' . 3 . '_NAME'] = "Настройка системы";
+        $this->arResult['ROADMAP_PARAMS']['STEP_' . 4 . '_NAME'] = "Обучение";
+        $this->arResult['ROADMAP_PARAMS']['STEP_' . 5 . '_NAME'] = "Сопровождение и доработки";
+
+         $this->arResult['ROADMAP_PARAMS']['STEP_' . 1 . '_DURATION'] = "5 дней";
+        $this->arResult['ROADMAP_PARAMS']['STEP_' . 2 . '_DURATION'] = "3 дня";
+        $this->arResult['ROADMAP_PARAMS']['STEP_' . 3 . '_DURATION'] = "14 дней";
+        $this->arResult['ROADMAP_PARAMS']['STEP_' . 4 . '_DURATION'] = "7 дней";
+        $this->arResult['ROADMAP_PARAMS']['STEP_' . 5 . '_DURATION'] = "н.в";
+        // for ($i = 1; $i <= 7; $i++) {
+        //     if (!empty($props['STEP_' . $i . '_NAME']['VALUE'])) {
+        //         $this->arResult['ROADMAP_PARAMS']['STEP_' . $i . '_NAME'] = $props['STEP_' . $i . '_NAME']['VALUE'];
+        //     }
+        //     if (!empty($props['STEP_' . $i . '_TETRIS']['VALUE'])) {
+        //         $this->arResult['ROADMAP_PARAMS']['STEP_' . $i . '_TETRIS'] = $props['STEP_' . $i . '_TETRIS']['VALUE'];
+        //     }
+        //     if (!empty($props['STEP_' . $i . '_DURATION']['VALUE'])) {
+        //         $this->arResult['ROADMAP_PARAMS']['STEP_' . $i . '_DURATION'] = $props['STEP_' . $i . '_DURATION']['VALUE'];
+        //     }
+        // }
 
         // === STAGES маппинг ===
         foreach ($props['STAGES_INTEGRATION']['VALUE'] as $index => $stageTitle) {

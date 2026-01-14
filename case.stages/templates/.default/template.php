@@ -19,7 +19,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
                     <div class="stages__card-body">
                         <?php if($stage['TEXT']): ?>
                         <div class="stages__card-desc js-scrollbar">
-                            <?=$stage['TEXT']?>
+                           <?=htmlspecialchars_decode($stage['TEXT'])?>
                         </div>
                         <?php endif; ?>
                         
